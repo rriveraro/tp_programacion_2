@@ -1,0 +1,934 @@
+<mxfile host="app.diagrams.net" pages="7">
+  <diagram name="1 Paquetes" id="pg0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1300" pageHeight="880" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p0_title" parent="1" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" value="1/7 · Vista modular: paquetes y dependencias (API Gestión de Paseos Caninos)" vertex="1">
+          <mxGeometry height="26" width="900" x="20" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_main" parent="1" style="shape=note;size=12;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;fontSize=11;fillColor=#fff9d6;strokeColor=#b8a000;" value="app/main.py&lt;br&gt;Crea la app FastAPI, registra el router de cada módulo&lt;br&gt;y los manejadores de excepciones de dominio." vertex="1">
+          <mxGeometry height="74" width="390" x="40" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_auth_tab" parent="1" style="rounded=0;html=1;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;auth&lt;/b&gt;" vertex="1">
+          <mxGeometry height="24" width="130" x="40" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_auth" parent="1" style="rounded=0;html=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=11;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="AuthService  (registrar, login, cambiar contraseña)&lt;br&gt;Dependencias: get_usuario_actual, require_rol&lt;br&gt;Router: /auth" vertex="1">
+          <mxGeometry height="86" width="380" x="40" y="464" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_usuarios_tab" parent="1" style="rounded=0;html=1;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;usuarios&lt;/b&gt;" vertex="1">
+          <mxGeometry height="24" width="130" x="450" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_usuarios" parent="1" style="rounded=0;html=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=11;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Usuario (abstracta), Dueño, Paseador&lt;br&gt;Domicilio (value object)&lt;br&gt;UsuarioService, UsuarioRepository&lt;br&gt;Router: /usuarios" vertex="1">
+          <mxGeometry height="106" width="320" x="450" y="464" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_mascotas_tab" parent="1" style="rounded=0;html=1;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;mascotas&lt;/b&gt;" vertex="1">
+          <mxGeometry height="24" width="130" x="450" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_mascotas" parent="1" style="rounded=0;html=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=11;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Mascota&lt;br&gt;MascotaService, MascotaRepository&lt;br&gt;«interface» ConsultaReservasActivas&lt;br&gt;Router: /mascotas" vertex="1">
+          <mxGeometry height="106" width="320" x="450" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_reservas_tab" parent="1" style="rounded=0;html=1;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;reservas&lt;/b&gt;" vertex="1">
+          <mxGeometry height="24" width="130" x="850" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_reservas" parent="1" style="rounded=0;html=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=11;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Reserva, Turno (value object)&lt;br&gt;ReservaState + 5 estados  (patrón State)&lt;br&gt;EventoReserva, Penalidad&lt;br&gt;ReservaService, ReservaRepository&lt;br&gt;CalculadoraTarifa&lt;br&gt;Router: /reservas" vertex="1">
+          <mxGeometry height="146" width="400" x="846" y="89" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_core_tab" parent="1" style="rounded=0;html=1;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;core&lt;/b&gt;" vertex="1">
+          <mxGeometry height="24" width="130" x="40" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_core" parent="1" style="rounded=0;html=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=11;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="config: Configuracion (ConfigUsuarios, ConfigReservas, ConfigTarifas)   ·   security: PasswordHasher, TokenService&lt;br&gt;database: sesión SQLAlchemy   ·   excepciones: AppError, NoAutorizadoError, TransicionInvalidaError, ..." vertex="1">
+          <mxGeometry height="66" width="1210" x="40" y="714" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_e0" edge="1" parent="1" source="p0_reservas" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.000;exitY=0.765;exitPerimeter=0;entryX=1.000;entryY=0.308;entryPerimeter=0;" target="p0_mascotas">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_e1" edge="1" parent="1" source="p0_mascotas" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=1.000;exitPerimeter=0;entryX=0.500;entryY=0.185;entryPerimeter=0;" target="p0_usuarios">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_e2" edge="1" parent="1" source="p0_reservas" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.250;exitY=1.000;exitPerimeter=0;entryX=1.000;entryY=0.462;entryPerimeter=0;" target="p0_usuarios">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_e3" edge="1" parent="1" source="p0_auth" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.727;exitPerimeter=0;entryX=0.000;entryY=0.615;entryPerimeter=0;" target="p0_usuarios">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_e4" edge="1" parent="1" source="p0_auth" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.447;exitY=1.000;exitPerimeter=0;entryX=0.140;entryY=0.267;entryPerimeter=0;" target="p0_core">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_e5" edge="1" parent="1" source="p0_usuarios" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=1.000;exitPerimeter=0;entryX=0.471;entryY=0.267;entryPerimeter=0;" target="p0_core">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_e6" edge="1" parent="1" source="p0_reservas" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.800;exitY=1.000;exitPerimeter=0;entryX=0.934;entryY=0.267;entryPerimeter=0;" target="p0_core">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p0_l0" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="usa" vertex="1">
+          <mxGeometry height="18" width="60" x="786" y="169" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_l1" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="usa" vertex="1">
+          <mxGeometry height="18" width="60" x="574" y="363" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_l2" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="usa" vertex="1">
+          <mxGeometry height="18" width="60" x="411" y="523" as="geometry" />
+        </mxCell>
+        <mxCell id="p0_notes" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" value="Las flechas indican &quot;depende de&quot;. Regla: las dependencias bajan; ningún módulo de abajo conoce a uno de arriba (sin ciclos).&lt;br&gt;mascotas NO depende de reservas: define la interfaz ConsultaReservasActivas y reservas la implementa (inversión de dependencias).&lt;br&gt;mascotas → core omitido en el dibujo para no cruzar flechas (todos los módulos usan core)." vertex="1">
+          <mxGeometry height="54" width="1260" x="20" y="822" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="2 Usuarios y Auth" id="pg1">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1560" pageHeight="860" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p1_title" parent="1" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" value="2/7 · Módulos usuarios, auth y core (seguridad y configuración)" vertex="1">
+          <mxGeometry height="26" width="900" x="20" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_f_u" parent="1" style="rounded=0;dashed=1;fillColor=none;strokeColor=#888888;verticalAlign=top;align=left;spacingLeft=10;fontStyle=3;fontColor=#555555;html=1;" value="módulo usuarios" vertex="1">
+          <mxGeometry height="740" width="1290" x="-420" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_f_a" parent="1" style="rounded=0;dashed=1;fillColor=none;strokeColor=#888888;verticalAlign=top;align=left;spacingLeft=10;fontStyle=3;fontColor=#555555;html=1;" value="módulo auth" vertex="1">
+          <mxGeometry height="360" width="660" x="880" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_f_c" parent="1" style="rounded=0;dashed=1;fillColor=none;strokeColor=#888888;verticalAlign=top;align=left;spacingLeft=10;fontStyle=3;fontColor=#555555;html=1;" value="core" vertex="1">
+          <mxGeometry height="340" width="660" x="880" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_usuario" parent="1" style="swimlane;fontStyle=3;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#dae8fc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«class»&lt;/i&gt;&lt;br&gt;Usuario" vertex="1">
+          <mxGeometry height="288" width="300" x="270" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_usuario_a" parent="p1_usuario" style="text;html=1;strokeColor=#6c8ebf;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="- id: int&lt;br&gt;+ email: str  (único)&lt;br&gt;+ nombre: str&lt;br&gt;+ dni: str  (único)&lt;br&gt;+ fecha_nacimiento: date&lt;br&gt;+ domicilio: Domicilio  «embebido»&lt;br&gt;- password_hash: str&lt;br&gt;+ rol: Rol (enum)&lt;br&gt;+ activo: bool" vertex="1">
+          <mxGeometry height="190" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_usuario_m" parent="p1_usuario" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ edad(hoy): int&lt;br&gt;+ dar_de_baja()" vertex="1">
+          <mxGeometry height="50" width="300" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_dueno" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=30;html=1;whiteSpace=wrap;collapsible=0;fillColor=#e51400;strokeColor=#B20000;swimlaneFillColor=#dae8fc;fontColor=#ffffff;" value="Dueño" vertex="1">
+          <mxGeometry height="80" width="240" x="40" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_dueno_a" parent="p1_dueno" style="text;html=1;strokeColor=#B20000;fillColor=#e51400;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;fontColor=#ffffff;" value="+ mascotas: List[Mascota]&lt;br&gt;+ reservas: List[Reserva]" vertex="1">
+          <mxGeometry height="50" width="240" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_paseador" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=30;html=1;whiteSpace=wrap;collapsible=0;fillColor=#e51400;strokeColor=#B20000;swimlaneFillColor=#dae8fc;fontColor=#ffffff;" value="Paseador" vertex="1">
+          <mxGeometry height="60" width="270" x="300" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_paseador_a" parent="p1_paseador" style="text;html=1;strokeColor=#B20000;fillColor=#e51400;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;fontColor=#ffffff;" value="+ reservas_aceptadas: List[Reserva]" vertex="1">
+          <mxGeometry height="30" width="270" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_domicilio" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#e1d5e7;strokeColor=#9673a6;swimlaneFillColor=#e1d5e7;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«value object»&lt;/i&gt;&lt;br&gt;Domicilio" vertex="1">
+          <mxGeometry height="118" width="210" x="620" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_domicilio_a" parent="p1_domicilio" style="text;html=1;strokeColor=#9673a6;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ calle: str&lt;br&gt;+ numero: str&lt;br&gt;+ barrio: Barrio" vertex="1">
+          <mxGeometry height="70" width="210" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_barrio" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#fff2cc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«enumeration»&lt;/i&gt;&lt;br&gt;Barrio" vertex="1">
+          <mxGeometry height="118" width="210" x="620" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_barrio_a" parent="p1_barrio" style="text;html=1;strokeColor=#d6b656;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="PALERMO&lt;br&gt;CABALLITO&lt;br&gt;...  (48 barrios de CABA)" vertex="1">
+          <mxGeometry height="70" width="210" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_rol" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#fff2cc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«enumeration»&lt;/i&gt;&lt;br&gt;Rol" vertex="1">
+          <mxGeometry height="98" width="210" x="620" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_rol_a" parent="p1_rol" style="text;html=1;strokeColor=#d6b656;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="DUENO&lt;br&gt;PASEADOR" vertex="1">
+          <mxGeometry height="50" width="210" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_usvc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«service»&lt;/i&gt;&lt;br&gt;UsuarioService" vertex="1">
+          <mxGeometry height="168" width="340" x="40" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_usvc_a" parent="p1_usvc" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="- repo: UsuarioRepository&lt;br&gt;- config: ConfigUsuarios" vertex="1">
+          <mxGeometry height="50" width="340" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_usvc_m" parent="p1_usvc" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ obtener_perfil(usuario)&lt;br&gt;+ editar_perfil(usuario, datos)&lt;br&gt;+ dar_de_baja(usuario, ahora)" vertex="1">
+          <mxGeometry height="70" width="340" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_urepo" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#ffe6cc;strokeColor=#d79b00;swimlaneFillColor=#ffe6cc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«repository»&lt;/i&gt;&lt;br&gt;UsuarioRepository" vertex="1">
+          <mxGeometry height="148" width="360" x="440" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_urepo_a" parent="p1_urepo" style="text;html=1;strokeColor=#d79b00;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="360" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_urepo_m" parent="p1_urepo" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ obtener_por_id(id): Usuario&lt;br&gt;+ obtener_por_email(email): Usuario&lt;br&gt;+ existe_dni(dni): bool&lt;br&gt;+ guardar(usuario)" vertex="1">
+          <mxGeometry height="90" width="360" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_auth" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«service»&lt;/i&gt;&lt;br&gt;AuthService" vertex="1">
+          <mxGeometry height="208" width="300" x="900" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_auth_a" parent="p1_auth" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="- usuarios: UsuarioRepository&lt;br&gt;- hasher: PasswordHasher&lt;br&gt;- tokens: TokenService&lt;br&gt;- config: ConfigUsuarios" vertex="1">
+          <mxGeometry height="90" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_auth_m" parent="p1_auth" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ registrar(rol, datos): Usuario&lt;br&gt;+ login(email, password): Token&lt;br&gt;+ cambiar_password(usuario, actual, nueva)" vertex="1">
+          <mxGeometry height="70" width="300" y="138" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_deps" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«auth/dependencies»&lt;/i&gt;&lt;br&gt;Dependencias FastAPI" vertex="1">
+          <mxGeometry height="108" width="270" x="1250" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_deps_a" parent="p1_deps" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="270" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_deps_m" parent="p1_deps" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ get_usuario_actual(token): Usuario&lt;br&gt;+ require_rol(*roles)" vertex="1">
+          <mxGeometry height="50" width="270" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_hasher" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«core/security»&lt;/i&gt;&lt;br&gt;PasswordHasher" vertex="1">
+          <mxGeometry height="108" width="290" x="900" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_hasher_a" parent="p1_hasher" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="290" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_hasher_m" parent="p1_hasher" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ hash(password): str&lt;br&gt;+ verify(password, hash): bool" vertex="1">
+          <mxGeometry height="50" width="290" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_tokens" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«core/security»&lt;/i&gt;&lt;br&gt;TokenService" vertex="1">
+          <mxGeometry height="108" width="270" x="1250" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_tokens_a" parent="p1_tokens" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="270" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_tokens_m" parent="p1_tokens" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ crear_token(usuario): str&lt;br&gt;+ decodificar(token): payload" vertex="1">
+          <mxGeometry height="50" width="270" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_cfgu" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#f5f5f5;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«settings»&lt;/i&gt;&lt;br&gt;ConfigUsuarios" vertex="1">
+          <mxGeometry height="98" width="300" x="900" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_cfgu_a" parent="p1_cfgu" style="text;html=1;strokeColor=#666666;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ edad_minima = 18&lt;br&gt;+ edad_maxima = 99" vertex="1">
+          <mxGeometry height="50" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_e0" edge="1" parent="1" source="p1_dueno" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;fillColor=#e51400;strokeColor=#B20000;" target="p1_usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="410" />
+              <mxPoint x="420" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e1" edge="1" parent="1" source="p1_paseador" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;fillColor=#e51400;strokeColor=#B20000;" target="p1_usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="435" y="410" />
+              <mxPoint x="420" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e2" edge="1" parent="1" source="p1_usuario" style="startArrow=diamondThin;startFill=1;startSize=16;endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.243;exitPerimeter=0;entryX=0.000;entryY=0.593;entryPerimeter=0;" target="p1_domicilio">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e3" edge="1" parent="1" source="p1_usvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.357;exitPerimeter=0;entryX=0.000;entryY=0.405;entryPerimeter=0;" target="p1_urepo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e4" edge="1" parent="1" source="p1_urepo" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.444;exitY=0.000;exitPerimeter=0;entryX=1.000;entryY=0.764;entryPerimeter=0;" target="p1_usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e5" edge="1" parent="1" source="p1_auth" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.200;exitY=1.000;exitPerimeter=0;entryX=0.207;entryY=0.000;entryPerimeter=0;" target="p1_hasher">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e6" edge="1" parent="1" source="p1_auth" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.933;exitY=1.000;exitPerimeter=0;entryX=0.185;entryY=0.000;entryPerimeter=0;" target="p1_tokens">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="415" />
+              <mxPoint x="1300" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e7" edge="1" parent="1" source="p1_deps" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.630;exitY=1.000;exitPerimeter=0;entryX=0.630;entryY=0.000;entryPerimeter=0;" target="p1_tokens">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_e8" edge="1" parent="1" source="p1_auth" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.000;exitY=1.000;exitPerimeter=0;entryX=1.000;entryY=0.473;entryPerimeter=0;" target="p1_urepo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="865" y="300" />
+              <mxPoint x="865" y="660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1_l0" parent="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry height="18" width="60" x="578" y="156" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_l1" parent="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry height="18" width="60" x="596" y="128" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_notes" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" value="- privado  + público  # clave foránea&lt;br&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 0, 0));&quot;&gt;&lt;u&gt;Candidato opcional: UsuarioFactory.crear(rol, datos) para elegir la subclase y validar la edad por rol (con 2 roles alcanza un diccionario; no se dibuja)&lt;/u&gt;.&lt;/span&gt;&lt;br&gt;Las contraseñas solo existen hasheadas. La baja es lógica (activo = false) y se rechaza si el usuario tiene reservas activas." vertex="1">
+          <mxGeometry height="54" width="1520" x="20" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="AznrwhJJoOZ0Zh_jfoKa-1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«interface»&lt;/i&gt;&lt;br&gt;ReservasActivasUsuarios" vertex="1">
+          <mxGeometry height="88" width="300" x="-410" y="679" as="geometry" />
+        </mxCell>
+        <mxCell id="AznrwhJJoOZ0Zh_jfoKa-2" parent="AznrwhJJoOZ0Zh_jfoKa-1" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="AznrwhJJoOZ0Zh_jfoKa-3" parent="AznrwhJJoOZ0Zh_jfoKa-1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tiene_reservas_activas(usuario_id): bool" vertex="1">
+          <mxGeometry height="30" width="300" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AznrwhJJoOZ0Zh_jfoKa-6" edge="1" parent="1" source="p1_usvc_m" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;targetPerimeterSpacing=-1;fixedPointSpacing=1;dashed=1;" target="AznrwhJJoOZ0Zh_jfoKa-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="3 Mascotas" id="pg2">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p2_title" parent="1" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" value="3/7 · Módulo mascotas" vertex="1">
+          <mxGeometry height="26" width="900" x="20" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_f_m" parent="1" style="rounded=0;dashed=1;fillColor=none;strokeColor=#888888;verticalAlign=top;align=left;spacingLeft=10;fontStyle=3;fontColor=#555555;html=1;" value="módulo mascotas" vertex="1">
+          <mxGeometry height="560" width="790" x="290" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_dueno" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«usuarios»&lt;/i&gt;&lt;br&gt;Dueño" vertex="1">
+          <mxGeometry height="58" width="200" x="30" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_dueno_a" parent="p2_dueno" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="200" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_mascota" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=30;html=1;whiteSpace=wrap;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#dae8fc;" value="Mascota" vertex="1">
+          <mxGeometry height="210" width="330" x="330" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_mascota_a" parent="p2_mascota" style="text;html=1;strokeColor=#6c8ebf;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ id: int&lt;br&gt;+ nombre: str&lt;br&gt;+ edad: int&lt;br&gt;+ tamano: Tamano&lt;br&gt;+ raza: str&lt;br&gt;+ fecha_ultima_antirrabica: date?&lt;br&gt;# dueno_id: FK&amp;nbsp;" vertex="1">
+          <mxGeometry height="150" width="330" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_mascota_m" parent="p2_mascota" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tiene_vacuna_vigente(fecha_turno): bool" vertex="1">
+          <mxGeometry height="30" width="330" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_tamano" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#fff2cc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«enumeration»&lt;/i&gt;&lt;br&gt;Tamano" vertex="1">
+          <mxGeometry height="118" width="200" x="740" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_tamano_a" parent="p2_tamano" style="text;html=1;strokeColor=#d6b656;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="PEQUENO&lt;br&gt;MEDIANO&lt;br&gt;GRANDE" vertex="1">
+          <mxGeometry height="70" width="200" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_msvc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«service»&lt;/i&gt;&lt;br&gt;MascotaService" vertex="1">
+          <mxGeometry height="188" width="360" x="330" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_msvc_a" parent="p2_msvc" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="- repo: MascotaRepository&lt;br&gt;- reservas: ConsultaReservasActivas" vertex="1">
+          <mxGeometry height="50" width="360" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_msvc_m" parent="p2_msvc" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ crear(dueno, datos): Mascota&lt;br&gt;+ editar(dueno, mascota_id, datos)&lt;br&gt;+ eliminar(dueno, mascota_id)&lt;br&gt;+ listar_de_dueno(dueno)" vertex="1">
+          <mxGeometry height="90" width="360" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_mrepo" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#ffe6cc;strokeColor=#d79b00;swimlaneFillColor=#ffe6cc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«repository»&lt;/i&gt;&lt;br&gt;MascotaRepository" vertex="1">
+          <mxGeometry height="148" width="300" x="740" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_mrepo_a" parent="p2_mrepo" style="text;html=1;strokeColor=#d79b00;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_mrepo_m" parent="p2_mrepo" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ obtener(id): Mascota&lt;br&gt;+ listar_por_dueno(dueno_id)&lt;br&gt;+ guardar(mascota)&lt;br&gt;+ eliminar(mascota)" vertex="1">
+          <mxGeometry height="90" width="300" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_iface" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«interface»&lt;/i&gt;&lt;br&gt;ConsultaReservasActivas" vertex="1">
+          <mxGeometry height="88" width="300" x="740" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_iface_a" parent="p2_iface" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_iface_m" parent="p2_iface" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tiene_reservas_activas(mascota_id): bool" vertex="1">
+          <mxGeometry height="30" width="300" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_e0" edge="1" parent="1" source="p2_dueno" style="endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.517;exitPerimeter=0;entryX=0.000;entryY=0.238;entryPerimeter=0;" target="p2_mascota">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2_e1" edge="1" parent="1" source="p2_msvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.472;exitY=0.000;exitPerimeter=0;entryX=0.515;entryY=1.000;entryPerimeter=0;" target="p2_mascota">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2_e2" edge="1" parent="1" source="p2_msvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.532;exitPerimeter=0;entryX=0.000;entryY=0.541;entryPerimeter=0;" target="p2_mrepo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2_e3" edge="1" parent="1" source="p2_msvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.160;exitPerimeter=0;entryX=0.000;entryY=0.795;entryPerimeter=0;" target="p2_iface">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="410" />
+              <mxPoint x="715" y="330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2_l0" parent="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry height="18" width="60" x="238" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_l1" parent="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="0..*" vertex="1">
+          <mxGeometry height="18" width="60" x="306" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_l2" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="tiene" vertex="1">
+          <mxGeometry height="18" width="60" x="256" y="133" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_l3" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="crea / valida" vertex="1">
+          <mxGeometry height="18" width="83" x="488" y="326" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_notes" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" value="Crear, editar y eliminar mascotas son endpoints (POST/PUT/DELETE /mascotas) que llaman a MascotaService; la entidad no sabe guardarse.&lt;br&gt;La regla &quot;no eliminar con reservas activas&quot; se resuelve con la interfaz ConsultaReservasActivas, que implementa reservas (así mascotas no depende de reservas).&lt;br&gt;Vacuna vigente: fecha_ultima_antirrabica nula o con más de 1 año al día del turno → la mascota no puede reservar." vertex="1">
+          <mxGeometry height="54" width="1060" x="20" y="642" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="4 Reservas dominio" id="pg3">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1480" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p3_title" value="4/7 · Módulo reservas — modelo de dominio" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="8" width="900" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_f_r" value="módulo reservas" style="rounded=0;dashed=1;fillColor=none;strokeColor=#888888;verticalAlign=top;align=left;spacingLeft=10;fontStyle=3;fontColor=#555555;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="40" width="1120" height="660" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_dueno" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«usuarios»&lt;/i&gt;&lt;br&gt;Dueño" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" vertex="1" parent="1">
+          <mxGeometry x="30" y="90" width="210" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_dueno_a" value="" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_dueno">
+          <mxGeometry y="48" width="210" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_mascota" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«mascotas»&lt;/i&gt;&lt;br&gt;Mascota" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" vertex="1" parent="1">
+          <mxGeometry x="30" y="250" width="210" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_mascota_a" value="" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_mascota">
+          <mxGeometry y="48" width="210" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_paseador" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«usuarios»&lt;/i&gt;&lt;br&gt;Paseador" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" vertex="1" parent="1">
+          <mxGeometry x="30" y="410" width="210" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_paseador_a" value="" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_paseador">
+          <mxGeometry y="48" width="210" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_reserva" value="Reserva" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=30;html=1;whiteSpace=wrap;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="380" y="70" width="340" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_reserva_a" value="+ id: int&lt;br&gt;# dueno_id: FK&lt;br&gt;# mascota_id: FK&lt;br&gt;# paseador_id: FK?&lt;br&gt;+ turno: Turno  «embebido»&lt;br&gt;+ estado: EstadoReserva&lt;br&gt;+ tarifa: Decimal  (snapshot)&lt;br&gt;+ comision: Decimal  (snapshot)&lt;br&gt;+ creada_en: datetime&lt;br&gt;+ devuelta_en: datetime?&lt;br&gt;+ devolucion_tardia: bool?" style="text;html=1;strokeColor=#6c8ebf;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_reserva">
+          <mxGeometry y="30" width="340" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_reserva_m" value="+ aceptar(paseador, ahora)&lt;br&gt;+ cancelar_por_dueno(ahora)&lt;br&gt;+ cancelar_aceptacion(paseador, ahora)&lt;br&gt;+ expirar(ahora)&lt;br&gt;+ finalizar(paseador, ahora)&lt;br&gt;+ es_cancelacion_tardia(ahora): bool&lt;br&gt;+ ganancia_paseador(): Decimal" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_reserva">
+          <mxGeometry y="260" width="340" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_turno" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«value object»  valida al construir&lt;/i&gt;&lt;br&gt;Turno" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#e1d5e7;strokeColor=#9673a6;swimlaneFillColor=#e1d5e7;" vertex="1" parent="1">
+          <mxGeometry x="800" y="90" width="280" height="148" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_turno_a" value="+ fecha: date&lt;br&gt;+ hora_inicio: int  (8..19)" style="text;html=1;strokeColor=#9673a6;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_turno">
+          <mxGeometry y="48" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_turno_m" value="+ inicio(): datetime&lt;br&gt;+ fin(): datetime" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_turno">
+          <mxGeometry y="98" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_evento" value="EventoReserva" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=30;html=1;whiteSpace=wrap;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="800" y="300" width="300" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_evento_a" value="+ id: int&lt;br&gt;# reserva_id: FK&lt;br&gt;# usuario_id: FK?  (nulo = sistema)&lt;br&gt;+ accion: AccionEvento&lt;br&gt;+ estado_resultante: EstadoReserva&lt;br&gt;+ creado_en: datetime" style="text;html=1;strokeColor=#6c8ebf;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_evento">
+          <mxGeometry y="30" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_penal" value="Penalidad" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=30;html=1;whiteSpace=wrap;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="800" y="500" width="300" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_penal_a" value="+ id: int&lt;br&gt;# reserva_id: FK&lt;br&gt;# usuario_id: FK  (penalizado)&lt;br&gt;+ motivo: MotivoPenalidad&lt;br&gt;+ monto: Decimal&lt;br&gt;+ creada_en: datetime" style="text;html=1;strokeColor=#6c8ebf;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_penal">
+          <mxGeometry y="30" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e_est" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«enumeration»&lt;/i&gt;&lt;br&gt;EstadoReserva" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="70" width="220" height="158" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e_est_a" value="PENDIENTE&lt;br&gt;ACEPTADA&lt;br&gt;CANCELADA&lt;br&gt;EXPIRADA&lt;br&gt;FINALIZADA" style="text;html=1;strokeColor=#d6b656;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_e_est">
+          <mxGeometry y="48" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e_acc" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«enumeration»&lt;/i&gt;&lt;br&gt;AccionEvento" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="260" width="220" height="178" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e_acc_a" value="CREADA&lt;br&gt;ACEPTADA&lt;br&gt;CANCELADA_DUENO&lt;br&gt;ACEPTACION_CANCELADA&lt;br&gt;EXPIRADA&lt;br&gt;FINALIZADA" style="text;html=1;strokeColor=#d6b656;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_e_acc">
+          <mxGeometry y="48" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e_mot" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«enumeration»&lt;/i&gt;&lt;br&gt;MotivoPenalidad" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="470" width="220" height="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e_mot_a" value="CANCELACION_DUENO&lt;br&gt;CANCELACION_PASEADOR" style="text;html=1;strokeColor=#d6b656;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p3_e_mot">
+          <mxGeometry y="48" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_e0" style="endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.483;exitPerimeter=0;entryX=0.000;entryY=0.117;entryPerimeter=0;" edge="1" parent="1" source="p3_dueno" target="p3_reserva">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e1" style="endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.483;exitPerimeter=0;entryX=0.000;entryY=0.507;entryPerimeter=0;" edge="1" parent="1" source="p3_mascota" target="p3_reserva">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e2" style="endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.483;exitPerimeter=0;entryX=0.000;entryY=0.898;entryPerimeter=0;" edge="1" parent="1" source="p3_paseador" target="p3_reserva">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e3" style="startArrow=diamondThin;startFill=1;startSize=16;endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.195;exitPerimeter=0;entryX=0.000;entryY=0.405;entryPerimeter=0;" edge="1" parent="1" source="p3_reserva" target="p3_turno">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e4" style="endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.659;exitPerimeter=0;entryX=0.000;entryY=0.250;entryPerimeter=0;" edge="1" parent="1" source="p3_reserva" target="p3_evento">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_e5" style="endArrow=none;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.902;exitPerimeter=0;entryX=0.000;entryY=0.250;entryPerimeter=0;" edge="1" parent="1" source="p3_reserva" target="p3_penal">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="440" />
+              <mxPoint x="760" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3_l0" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="248" y="124" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l1" value="0..*" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="356" y="96" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l2" value="solicita" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="286" y="121" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l3" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="248" y="284" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l4" value="0..*" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="356" y="256" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l5" value="es paseada en" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="286" y="281" width="83" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l6" value="0..1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="248" y="444" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l7" value="0..*" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="356" y="416" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l8" value="acepta" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="286" y="441" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l9" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="728" y="156" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l10" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="776" y="128" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l11" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="728" y="346" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l12" value="0..*" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="776" y="318" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l13" value="historial" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="736" y="343" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l14" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="728" y="446" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l15" value="0..*" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="776" y="518" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_l16" value="genera" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="724" y="481" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_notes" value="El estado se persiste como enum (estado); su comportamiento está en el patrón State (diagrama 5). Turno no tiene tabla: son columnas de Reserva.&lt;br&gt;La devolución tardía es un dato de Reserva (devuelta_en + devolucion_tardia), calculado en finalizar(). No genera penalidad: solo es informativa.&lt;br&gt;Cupo del paseador: NO se guarda; se calcula contando sus reservas ACEPTADAS en ese turno (ReservaRepository.contar_aceptadas).&lt;br&gt;# = clave foránea. EventoReserva guarda solo IDs (sin datos personales); al paseador se le expone una vista mínima." style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="726" width="1440" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="5 Patron State" id="pg4">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1420" pageHeight="780" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p4_title" value="5/7 · Patrón State aplicado a Reserva" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="8" width="900" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_reserva" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«Context»&lt;/i&gt;&lt;br&gt;Reserva" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="30" y="100" width="330" height="208" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_reserva_a" value="- _state: ReservaState&lt;br&gt;+ estado: EstadoReserva  (persistido)" style="text;html=1;strokeColor=#6c8ebf;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_reserva">
+          <mxGeometry y="48" width="330" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_reserva_m" value="+ aceptar(paseador, ahora)&lt;br&gt;+ cancelar_por_dueno(ahora)&lt;br&gt;+ cancelar_aceptacion(paseador, ahora)&lt;br&gt;+ expirar(ahora)&lt;br&gt;+ finalizar(paseador, ahora)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_reserva">
+          <mxGeometry y="98" width="330" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_base" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«abstract»  por defecto: lanza TransicionInvalidaError&lt;/i&gt;&lt;br&gt;ReservaState" style="swimlane;fontStyle=3;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;swimlaneFillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="520" y="90" width="420" height="188" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_base_a" value="" style="text;html=1;strokeColor=#b85450;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_base">
+          <mxGeometry y="48" width="420" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_base_m" value="+ aceptar(reserva, paseador, ahora)&lt;br&gt;+ cancelar_por_dueno(reserva, ahora)&lt;br&gt;+ cancelar_aceptacion(reserva, paseador, ahora)&lt;br&gt;+ expirar(reserva, ahora)&lt;br&gt;+ finalizar(reserva, paseador, ahora)&lt;br&gt;+ desde(estado: EstadoReserva): ReservaState  «static»" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_base">
+          <mxGeometry y="58" width="420" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_pend" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«ConcreteState»&lt;/i&gt;&lt;br&gt;PendienteState" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;swimlaneFillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="30" y="450" width="300" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_pend_a" value="" style="text;html=1;strokeColor=#b85450;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_pend">
+          <mxGeometry y="48" width="300" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_pend_m" value="+ aceptar(reserva, paseador, ahora)&lt;br&gt;+ cancelar_por_dueno(reserva, ahora)&lt;br&gt;+ expirar(reserva, ahora)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_pend">
+          <mxGeometry y="58" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_acep" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«ConcreteState»&lt;/i&gt;&lt;br&gt;AceptadaState" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;swimlaneFillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="350" y="450" width="360" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_acep_a" value="" style="text;html=1;strokeColor=#b85450;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_acep">
+          <mxGeometry y="48" width="360" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_acep_m" value="+ cancelar_por_dueno(reserva, ahora)&lt;br&gt;+ cancelar_aceptacion(reserva, paseador, ahora)&lt;br&gt;+ finalizar(reserva, paseador, ahora)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_acep">
+          <mxGeometry y="58" width="360" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_canc" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«estado final»&lt;/i&gt;&lt;br&gt;CanceladaState" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;swimlaneFillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="730" y="450" width="200" height="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_canc_a" value="(sin acciones:&lt;br&gt;todo lanza error)" style="text;html=1;strokeColor=#b85450;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_canc">
+          <mxGeometry y="48" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_expi" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«estado final»&lt;/i&gt;&lt;br&gt;ExpiradaState" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;swimlaneFillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="950" y="450" width="200" height="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_expi_a" value="(sin acciones:&lt;br&gt;todo lanza error)" style="text;html=1;strokeColor=#b85450;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_expi">
+          <mxGeometry y="48" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_fina" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«estado final»&lt;/i&gt;&lt;br&gt;FinalizadaState" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;swimlaneFillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="450" width="200" height="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_fina_a" value="(sin acciones:&lt;br&gt;todo lanza error)" style="text;html=1;strokeColor=#b85450;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" vertex="1" parent="p4_fina">
+          <mxGeometry y="48" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_e0" style="endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.385;exitPerimeter=0;entryX=0.000;entryY=0.479;entryPerimeter=0;" edge="1" parent="1" source="p4_reserva" target="p4_base">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4_e1" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;" edge="1" parent="1" source="p4_pend" target="p4_base">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="380" />
+              <mxPoint x="730" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4_e2" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;" edge="1" parent="1" source="p4_acep" target="p4_base">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="380" />
+              <mxPoint x="730" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4_e3" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;" edge="1" parent="1" source="p4_canc" target="p4_base">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="380" />
+              <mxPoint x="730" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4_e4" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;" edge="1" parent="1" source="p4_expi" target="p4_base">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="380" />
+              <mxPoint x="730" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4_e5" style="endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=1.000;entryPerimeter=0;" edge="1" parent="1" source="p4_fina" target="p4_base">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="380" />
+              <mxPoint x="730" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p4_l0" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="368" y="186" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_l1" value="1" style="text;html=1;fontStyle=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="496" y="158" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_l2" value="delega en" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="416" y="183" width="60" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_notes" value="Cada acción de Reserva se delega en su estado actual: reserva._state.aceptar(reserva, ...). El estado valida la transición y actualiza reserva.estado.&lt;br&gt;Agregar un estado nuevo = una subclase nueva + registrarla en ReservaState.desde(); los demás estados no cambian (Open/Closed).&lt;br&gt;Contrapartida: agregar una acción nueva obliga a sumar el método en la clase base. Con 5 estados y la tabla 6.2 el patrón se justifica.&lt;br&gt;ReservaState.desde(estado) es la fábrica de estados: convierte el enum guardado en la base (p.ej. &quot;PENDIENTE&quot;) en el objeto PendienteState al cargar la reserva.&lt;br&gt;Dónde viven las reglas de negocio: tiempo (30 min, 1 h, 15 min) dentro del estado; cupo y vacuna en ReservaService (necesitan consultar la base)." style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="690" width="1380" height="86" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="6 Reservas servicios" id="pg5">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1400" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p5_title" parent="1" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" value="6/7 · Módulo reservas — servicios, repositorio y configuración" vertex="1">
+          <mxGeometry height="26" width="900" x="20" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_rsvc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«service»&lt;/i&gt;&lt;br&gt;ReservaService" vertex="1">
+          <mxGeometry height="328" width="380" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_rsvc_a" parent="p5_rsvc" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="- reservas: ReservaRepository&lt;br&gt;- calculadora: CalculadoraTarifa&lt;br&gt;- config: ConfigReservas" vertex="1">
+          <mxGeometry height="70" width="380" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_rsvc_m" parent="p5_rsvc" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ crear_reserva(dueno, mascota_id, turno, ahora)&lt;br&gt;+ listar_pendientes(paseador, ahora)&lt;br&gt;+ aceptar_reserva(paseador, reserva_id, ahora)&lt;br&gt;+ cancelar_reserva(dueno, reserva_id, ahora)&lt;br&gt;+ cancelar_aceptacion(paseador, reserva_id, ahora)&lt;br&gt;+ finalizar_reserva(paseador, reserva_id, ahora)&lt;br&gt;+ consultar_reservas(usuario)&lt;br&gt;+ ver_domicilio(paseador, reserva_id)&lt;br&gt;+ consultar_mascota(paseador, reserva_id)&lt;br&gt;+ historial(usuario)" vertex="1">
+          <mxGeometry height="210" width="380" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_rrepo" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#ffe6cc;strokeColor=#d79b00;swimlaneFillColor=#ffe6cc;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«repository»&lt;/i&gt;&lt;br&gt;ReservaRepository" vertex="1">
+          <mxGeometry height="268" width="380" x="520" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_rrepo_a" parent="p5_rrepo" style="text;html=1;strokeColor=#d79b00;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="380" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_rrepo_m" parent="p5_rrepo" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ obtener(id): Reserva&lt;br&gt;+ guardar(reserva)&lt;br&gt;+ listar_pendientes(ahora)&lt;br&gt;+ listar_de_dueno(dueno_id)&lt;br&gt;+ listar_de_paseador(paseador_id)&lt;br&gt;+ contar_aceptadas(paseador_id, turno): int&lt;br&gt;+ paseador_ya_cancelo(paseador_id, reserva_id): bool&lt;br&gt;+ expirar_vencidas(ahora)&lt;br&gt;+ registrar_evento(evento)&lt;br&gt;+ registrar_penalidad(penalidad)" vertex="1">
+          <mxGeometry height="210" width="380" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_cfgr" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#f5f5f5;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«settings»&lt;/i&gt;&lt;br&gt;ConfigReservas" vertex="1">
+          <mxGeometry height="198" width="360" x="960" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_cfgr_a" parent="p5_cfgr" style="text;html=1;strokeColor=#666666;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tope_mascotas_por_turno = 5&lt;br&gt;+ hora_apertura = 8&lt;br&gt;+ hora_cierre = 20&lt;br&gt;+ anticipacion_min_horas = 2&lt;br&gt;+ expiracion_antes_min = 60&lt;br&gt;+ limite_cancelacion_min = 30&lt;br&gt;+ tolerancia_devolucion_min = 15" vertex="1">
+          <mxGeometry height="150" width="360" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_iface" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«interface»  (módulo mascotas)&lt;/i&gt;&lt;br&gt;ConsultaReservasActivas" vertex="1">
+          <mxGeometry height="88" width="360" x="960" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_iface_a" parent="p5_iface" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="360" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_iface_m" parent="p5_iface" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tiene_reservas_activas(mascota_id): bool" vertex="1">
+          <mxGeometry height="30" width="360" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_calc" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#d5e8d4;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«service»&lt;/i&gt;&lt;br&gt;CalculadoraTarifa" vertex="1">
+          <mxGeometry height="168" width="380" x="40" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_calc_a" parent="p5_calc" style="text;html=1;strokeColor=#82b366;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="- config: ConfigTarifas" vertex="1">
+          <mxGeometry height="30" width="380" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_calc_m" parent="p5_calc" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tarifa(tamano): Decimal&lt;br&gt;+ comision(tarifa): Decimal&lt;br&gt;+ ganancia_paseador(tarifa): Decimal&lt;br&gt;+ penalidad(tarifa): Decimal" vertex="1">
+          <mxGeometry height="90" width="380" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_cfgt" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#f5f5f5;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«settings»&lt;/i&gt;&lt;br&gt;ConfigTarifas" vertex="1">
+          <mxGeometry height="138" width="380" x="40" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_cfgt_a" parent="p5_cfgt" style="text;html=1;strokeColor=#666666;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ precio_base = (a definir)&lt;br&gt;+ factor_tamano = {...} (a definir)&lt;br&gt;+ pct_comision = 0.15&lt;br&gt;+ pct_penalidad = 0.15" vertex="1">
+          <mxGeometry height="90" width="380" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_x1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«dominio»&lt;/i&gt;&lt;br&gt;Reserva" vertex="1">
+          <mxGeometry height="58" width="150" x="435" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_x1_a" parent="p5_x1" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="150" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_x2" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«dominio»&lt;/i&gt;&lt;br&gt;EventoReserva" vertex="1">
+          <mxGeometry height="58" width="170" x="615" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_x2_a" parent="p5_x2" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="170" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_x3" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«dominio»&lt;/i&gt;&lt;br&gt;Penalidad" vertex="1">
+          <mxGeometry height="58" width="150" x="815" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_x3_a" parent="p5_x3" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="150" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_e0" edge="1" parent="1" source="p5_rsvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.183;exitPerimeter=0;entryX=0.000;entryY=0.224;entryPerimeter=0;" target="p5_rrepo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e1" edge="1" parent="1" source="p5_rsvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=0.000;exitPerimeter=0;entryX=0.500;entryY=0.000;entryPerimeter=0;" target="p5_cfgr">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="230" y="52" />
+              <mxPoint x="1140" y="52" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e2" edge="1" parent="1" source="p5_rsvc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=1.000;exitPerimeter=0;entryX=0.500;entryY=0.000;entryPerimeter=0;" target="p5_calc">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e3" edge="1" parent="1" source="p5_calc" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=1.000;exitPerimeter=0;entryX=0.500;entryY=0.000;entryPerimeter=0;" target="p5_cfgt">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e4" edge="1" parent="1" source="p5_rrepo" style="dashed=1;endArrow=block;endFill=0;endSize=14;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.560;exitPerimeter=0;entryX=0.000;entryY=0.500;entryPerimeter=0;" target="p5_iface">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="230" />
+              <mxPoint x="930" y="374" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e5" edge="1" parent="1" source="p5_rrepo" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.145;exitY=1.000;exitPerimeter=0;entryX=0.500;entryY=0.000;entryPerimeter=0;" target="p5_x1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e6" edge="1" parent="1" source="p5_rrepo" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.645;exitY=1.000;exitPerimeter=0;entryX=0.500;entryY=0.000;entryPerimeter=0;" target="p5_x2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="415" />
+              <mxPoint x="720" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_e7" edge="1" parent="1" source="p5_rrepo" style="dashed=1;endArrow=open;endSize=10;html=1;rounded=0;strokeWidth=1.5;exitX=0.974;exitY=1.000;exitPerimeter=0;entryX=0.333;entryY=0.000;entryPerimeter=0;" target="p5_x3">
+          <mxGeometry relative="1" x="-0.0003" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="420" />
+              <mxPoint x="864.95" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p5_l0" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="lee" vertex="1">
+          <mxGeometry height="18" width="60" x="661" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_l1" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="usa" vertex="1">
+          <mxGeometry height="18" width="60" x="194" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_l2" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="lee" vertex="1">
+          <mxGeometry height="18" width="60" x="194" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_notes" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" value="aceptar_reserva: (1) ¿ya canceló este paseador? (2) contar_aceptadas &amp;lt; tope (3) reserva.aceptar() (4) registrar evento — todo en una transacción.&lt;br&gt;cancelar_*: reserva.es_cancelacion_tardia(ahora) decide SI hay penalidad; CalculadoraTarifa.penalidad() decide CUÁNTO; el servicio registra Penalidad y evento.&lt;br&gt;listar_pendientes filtra por tiempo (nunca muestra vencidas) y llama a expirar_vencidas(ahora): un único UPDATE, sin job externo (expiración perezosa).&lt;br&gt;Tarifa y comisión se calculan al crear_reserva y se guardan en la reserva. &quot;ahora&quot; se pasa como parámetro para poder testear las reglas de tiempo.&lt;br&gt;Schemas de respuesta distintos por rol (no se diagraman): el dueño no ve comisión/ganancia; el paseador no ve domicilio salvo con la reserva aceptada a su nombre." vertex="1">
+          <mxGeometry height="86" width="1360" x="20" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="Jdlt42eXI6HR_E2hm1Gz-5" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;startSize=48;html=1;whiteSpace=wrap;collapsible=0;dashed=1;fillColor=#fafafa;strokeColor=#999999;swimlaneFillColor=#fafafa;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«interface»&lt;/i&gt;&lt;br&gt;ReservasActivasUsuarios" vertex="1">
+          <mxGeometry height="88" width="300" x="1020" y="452" as="geometry" />
+        </mxCell>
+        <mxCell id="Jdlt42eXI6HR_E2hm1Gz-6" parent="Jdlt42eXI6HR_E2hm1Gz-5" style="text;html=1;strokeColor=#999999;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="10" width="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="Jdlt42eXI6HR_E2hm1Gz-7" parent="Jdlt42eXI6HR_E2hm1Gz-5" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;whiteSpace=wrap;fontSize=11;" value="+ tiene_reservas_activas(usuario_id): bool" vertex="1">
+          <mxGeometry height="30" width="300" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="Jdlt42eXI6HR_E2hm1Gz-8" edge="1" parent="1" source="p5_rrepo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;targetPerimeterSpacing=-1;fixedPointSpacing=1;dashed=1;" target="Jdlt42eXI6HR_E2hm1Gz-5">
+          <mxGeometry relative="1" x="0.3375" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="270" />
+              <mxPoint x="950" y="500" />
+            </Array>
+            <mxPoint x="910.0000000000005" y="-40" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="7 Estados" id="pg6">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1300" pageHeight="560" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p6_title" parent="1" style="text;html=1;fontStyle=1;fontSize=16;align=left;strokeColor=none;fillColor=none;" value="7/7 · Máquina de estados de Reserva" vertex="1">
+          <mxGeometry height="26" width="900" x="20" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_ini" parent="1" style="ellipse;fillColor=#000000;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="42" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_P" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;PENDIENTE&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="180" x="110" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_A" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;ACEPTADA&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="180" x="630" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_F" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#e0e0e0;strokeColor=#666666;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«final»&lt;/i&gt;&lt;br&gt;&lt;b&gt;FINALIZADA&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="180" x="1060" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_E" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#e0e0e0;strokeColor=#666666;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«final»&lt;/i&gt;&lt;br&gt;&lt;b&gt;EXPIRADA&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="180" x="110" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_C" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#e0e0e0;strokeColor=#666666;" value="&lt;i style=&quot;font-size:10px;font-weight:normal&quot;&gt;«final»&lt;/i&gt;&lt;br&gt;&lt;b&gt;CANCELADA&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="180" x="630" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_e0" edge="1" parent="1" source="p6_ini" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.500;exitPerimeter=0;entryX=0.000;entryY=0.500;entryPerimeter=0;" target="p6_P">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_e1" edge="1" parent="1" source="p6_P" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.275;exitPerimeter=0;entryX=0.000;entryY=0.275;entryPerimeter=0;" target="p6_A">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_e2" edge="1" parent="1" source="p6_A" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=0.000;exitY=0.725;exitPerimeter=0;entryX=1.000;entryY=0.725;entryPerimeter=0;" target="p6_P">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_e3" edge="1" parent="1" source="p6_A" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=1.000;exitY=0.500;exitPerimeter=0;entryX=0.000;entryY=0.500;entryPerimeter=0;" target="p6_F">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_e4" edge="1" parent="1" source="p6_P" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=0.111;exitY=1.000;exitPerimeter=0;entryX=0.111;entryY=0.000;entryPerimeter=0;" target="p6_E">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_e5" edge="1" parent="1" source="p6_A" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=0.500;exitY=1.000;exitPerimeter=0;entryX=0.500;entryY=0.000;entryPerimeter=0;" target="p6_C">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_e6" edge="1" parent="1" source="p6_P" style="endArrow=block;endFill=1;endSize=8;html=1;rounded=0;strokeWidth=1.5;exitX=0.972;exitY=1.000;exitPerimeter=0;entryX=0.000;entryY=0.500;entryPerimeter=0;" target="p6_C">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="285" y="290" />
+              <mxPoint x="540" y="290" />
+              <mxPoint x="540" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6_l0" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="crear_reserva&lt;br&gt;(RF05)" vertex="1">
+          <mxGeometry height="34" width="83" x="10" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_l1" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="aceptar (RF07) [cupo libre, no canceló antes]" vertex="1">
+          <mxGeometry height="18" width="288" x="300" y="106" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_l2" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="cancelar_aceptacion (RF10) / penalidad si faltan ≤ 30 min" vertex="1">
+          <mxGeometry height="18" width="365" x="300" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_l3" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="finalizar (RF12)&lt;br&gt;[turno iniciado]&lt;br&gt;/ marca tardía si &amp;gt; 15 min" vertex="1">
+          <mxGeometry height="50" width="166" x="818" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_l4" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="expirar (RF11)&lt;br&gt;por el sistema&lt;br&gt;[faltan &amp;lt; 60 min]" vertex="1">
+          <mxGeometry height="50" width="109" x="140" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_l5" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="cancelar (dueño, RF09)&lt;br&gt;/ penalidad si faltan ≤ 30 min&lt;br&gt;[turno no iniciado]" vertex="1">
+          <mxGeometry height="50" width="192" x="730" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_l6" parent="1" style="text;html=1;fontSize=11;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" value="cancelar (dueño, RF09) / sin penalidad" vertex="1">
+          <mxGeometry height="18" width="243" x="300" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_notes" parent="1" style="text;html=1;whiteSpace=wrap;fontSize=11;fontColor=#555555;align=left;verticalAlign=top;strokeColor=none;fillColor=none;" value="Los estados finales (gris) no admiten ninguna acción. PENDIENTE ⇄ ACEPTADA es el único ciclo: el paseador puede retirarse y la reserva vuelve a PENDIENTE.&lt;br&gt;Cada transición registra un EventoReserva. Con el turno iniciado no se puede cancelar. La devolución tardía (&amp;gt; 15 min) es solo una marca informativa.&lt;br&gt;Si al cancelar su aceptación faltan menos de 60 min para el inicio, la reserva pasa a EXPIRADA en la siguiente consulta (expiración perezosa)." vertex="1">
+          <mxGeometry height="54" width="1260" x="20" y="502" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
