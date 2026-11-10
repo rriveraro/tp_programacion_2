@@ -1,0 +1,59 @@
+[project]
+name = "paseos"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Caceres-Ludmila",email = "ludmilajazmin762@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard] (>=0.162.2,<0.163.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.2.0,<10.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "ruff (>=0.17.4,<0.18.0)",
+    "typos (>=1.52.0,<2.0.0)",
+    "httpx (>=0.28.1,<0.29.0)"
+]
+
+
+[tool.ruff]
+line-length = 79
+extend-exclude = ['migrations']
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest]
+pythonpath = ['.']
+addopts = ['-p', 'no:warnings', '--cov=paseos', '--cov-context=test']
+
+[tool.typos.files]
+extend-exclude = ["*.md"]
+
+[tool.poe]
+poetry_command = ""
+
+[tool.poe.tasks]
+lint = "ruff check"
+format.sequence = [{ cmd = "ruff check --fix" }, { cmd = "ruff format" }]
+serve = "fastapi dev paseos/app.py"
+test.sequence = [
+  "lint",
+  { cmd = "pytest -s -x -vv $POE_EXTRA_ARGS" },
+  { cmd = "coverage html --show-contexts" },
+]
