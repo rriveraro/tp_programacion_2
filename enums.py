@@ -8,3 +8,15 @@ class EstadoReserva(Enum):
     CANCELADA = "CANCELADA"
     EXPIRADA = "EXPIRADA"
     FINALIZADA = "FINALIZADA"
+
+
+class MetodoPago(Enum):
+    EFECTIVO = 'EFECTIVO'
+    TRANSFERENCIA = 'TRANSFERENCIA'
+    TARJETA = 'TARJETA'
+
+
+class EstadoPago(Enum):
+    PENDIENTE = 'PENDIENTE'
+    APROBADO = 'APROBADO'
+    RECHAZADO = 'RECHAZADO'
