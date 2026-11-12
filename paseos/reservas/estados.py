@@ -4,7 +4,7 @@ from __future__ import annotations
 from datetime import timedelta
 
 from config import MINUTOS_EXPIRAR_ANTES
-from enums import EstadoReserva
+from paseos.reservas.enums import EstadoReserva
 from excepciones import TransicionInvalidaError
 
 

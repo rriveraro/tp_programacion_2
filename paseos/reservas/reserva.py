@@ -3,9 +3,9 @@ from datetime import date, datetime, time, timedelta
 from sqlalchemy.orm import Mapped, composite, mapped_column
 from config import MINUTOS_CANCELACION_TARDIA
 from db import Base
-from enums import EstadoReserva
-from estados import ESTADOS
-from turno import Turno
+from paseos.reservas.enums import EstadoReserva
+from paseos.reservas.estados import ESTADOS
+from paseos.reservas.turno import Turno
  
 class Reserva(Base):
     """Reserva de un paseo. El comportamiento depende del estado (patrón State)."""

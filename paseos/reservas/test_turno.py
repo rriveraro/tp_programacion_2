@@ -3,7 +3,7 @@ from datetime import date, datetime, time
 
 import pytest
 
-from turno import Turno, TurnoInvalidoError
+from paseos.reservas.turno import Turno, TurnoInvalidoError
 
 AHORA = datetime(2026, 11, 8, 12, 0)
 
