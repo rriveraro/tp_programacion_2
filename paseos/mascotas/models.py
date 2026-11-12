@@ -31,7 +31,7 @@ class Mascota(Base):
             - (0 if cumplio_este_anio else 1)
         )
 
-    def tiene_antirrabica_vigente(self, hoy: date) -> bool:
-        """Devuelve True si la mascota tiene la vacuna antirrábica vigente a la fecha `hoy`."""
+    def tiene_antirrabica_vigente(self, fecha_turno: date) -> bool:
+        """Devuelve True si la mascota tiene la vacuna antirrábica vigente a la fecha del turno."""
         # La vacuna dura un año, así que se considera vigente si fue aplicada hace menos de un año.
-        return (hoy - self.fecha_nacimiento).days < 365
+        return (fecha_turno - self.fecha_nacimiento).days < 365
