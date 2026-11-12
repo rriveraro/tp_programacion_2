@@ -1,0 +1,37 @@
+# Corre el lint y los tests automáticamente en cada push a main
+# y en cada pull request. El resultado se ve en la pestaña "Actions".
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código del repo
+        uses: actions/checkout@v4
+
+      - name: Instalar Poetry
+        run: pipx install poetry
+
+      - name: Instalar Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'poetry'
+
+      - name: Instalar dependencias
+        run: poetry install
+
+      - name: Revisar estilo con ruff
+        continue-on-error: true
+        run: poetry run ruff check
+
+      - name: Correr los tests
+        run: poetry run pytest
+        env:
+          SECRET_KEY: clave-solo-para-los-tests-de-github-actions
