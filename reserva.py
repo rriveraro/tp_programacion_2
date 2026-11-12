@@ -1,21 +1,38 @@
 # reserva.py
-from datetime import datetime, timedelta
-
+from datetime import date, datetime, time, timedelta
+from sqlalchemy.orm import Mapped, composite, mapped_column
 from config import MINUTOS_CANCELACION_TARDIA
+from db import Base
 from enums import EstadoReserva
 from estados import ESTADOS
 from turno import Turno
-
-
-class Reserva:
+ 
+class Reserva(Base):
     """Reserva de un paseo. El comportamiento depende del estado (patrón State)."""
 
-    def __init__(self, mascota_id: int, turno: Turno):
+    __tablename__ = "reserva"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    mascota_id: Mapped[int] = mapped_column(foreign_key="mascotas.id", nullable=False)
+    mascota: Mapped['Mascota'] = relationship() #para que dueño tenga de donde sacarlo
+    dueno_id = association_proxy('mascota', 'dueno_id') #para obtener el id del dueño de la mascota sin hacer join
+    turno_id: Mapped[int] = composite(Turno, "fecha", "hora_inicio", "hora_fin")
+    estado: Mapped[EstadoReserva]
+    paseador_id: Mapped[int | None] = mapped_column(foreign_key="usuarios.id", nullable=True)
+    devuelta_en: Mapped[datetime | None]
+    devolucion_tardia: Mapped[bool]
+    tarifa: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    comision: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    calle: Mapped[str]
+    numero: Mapped[str]
+    barrio: Mapped[Barrio]
+
+
+    def __init__(self, mascota_id: int, turno: Turno): #no se si sirve pero el estado tiene que ser pendiente
         self.mascota_id = mascota_id
         self.turno = turno
         self.estado = EstadoReserva.PENDIENTE
-        self.paseador_id: int | None = None
-        self.devuelta_en: datetime | None = None
+        self.paseador_id= None
         self.devolucion_tardia = False
 
     @property
