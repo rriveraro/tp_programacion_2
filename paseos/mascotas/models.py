@@ -17,6 +17,7 @@ class Mascota(Base):
     fecha_nacimiento: Mapped[date]
     tamaño: Mapped[Tamaño]
     raza: Mapped[str]
+    fecha_antirrabica: Mapped[date | None] = mapped_column(nullable=True)
 
     def edad(self, hoy: date) -> int:
         """Edad en años cumplidos a la fecha `hoy`
@@ -32,6 +33,5 @@ class Mascota(Base):
         )
 
     def tiene_antirrabica_vigente(self, fecha_turno: date) -> bool:
-        """Devuelve True si la mascota tiene la vacuna antirrábica vigente a la fecha del turno."""
-        # La vacuna dura un año, así que se considera vigente si fue aplicada hace menos de un año.
-        return (fecha_turno - self.fecha_nacimiento).days < 365
+        """indica si la vacuna antirrábica está vigente a la fecha del turno"""
+        
