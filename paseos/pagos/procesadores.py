@@ -1,5 +1,5 @@
 from config import NUMERO_TARJETA_APROBADA, NUMERO_TARJETA_RECHAZADA
-from paseos.reservas.enums import EstadoPago, MetodoPago
+from paseos.pagos.enums import EstadoPago, MetodoPago
 from paseos.pagos.excepciones import DatosDePagoInvalidosError
 
 
