@@ -9,3 +9,6 @@ class TurnoInvalidoError(ReservaError):
 
 class TransicionInvalidaError(ReservaError):
     """La acción no está permitida en el estado actual de la reserva."""
+
+class VacunaAntirrabicaNoVigenteError(Exception):
+    pass
