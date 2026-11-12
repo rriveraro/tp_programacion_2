@@ -3,10 +3,10 @@ from datetime import date, datetime, time
 
 import pytest
 
-from enums import EstadoReserva
+from paseos.reservas.enums import EstadoReserva
 from excepciones import TransicionInvalidaError
-from reserva import Reserva
-from turno import Turno
+from paseos.reservas.reserva import Reserva
+from paseos.reservas.turno import Turno
 
 AHORA = datetime(2026, 11, 8, 12, 0)
 TURNO = Turno(date(2026, 11, 10), time(13, 0), time(14, 0))
