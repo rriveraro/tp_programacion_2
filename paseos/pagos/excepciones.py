@@ -1,16 +1,24 @@
-# Excepciones PAGOS
-# ---------------------------------------------------
-class PagoError(Exception):
-    """Base de las excepciones del modulo de pagos"""
+"""Errores de negocio del módulo pagos.
+
+Heredan de las clases base de paseos.core.exceptions
+"""
+
+from paseos.core.exceptions import Conflicto, SolicitudInvalida
 
 
-class PagoInvalidoError(PagoError):
-    """No se puede crear el pago (La reserva o el monto no son validos)"""
+class PagoInvalidoError(Conflicto):
+    """No se puede crear el pago (reserva sin finalizar o monto inválido)."""
+
+    mensaje = 'No se puede crear el pago para esta reserva'
 
 
-class ConfirmacionInvalidaError(PagoError):
-    """La confirmación manual del pago no esta permitida"""
+class ConfirmacionInvalidaError(Conflicto):
+    """La confirmación manual del pago no está permitida."""
+
+    mensaje = 'No se puede confirmar este pago'
 
 
-class DatosDePagoInvalidosError(PagoError):
-    """Los datos del medio de pago son invalidos o faltan"""
+class DatosDePagoInvalidosError(SolicitudInvalida):
+    """Los datos del medio de pago son inválidos o faltan."""
+
+    mensaje = 'Los datos del medio de pago son inválidos o faltan'
