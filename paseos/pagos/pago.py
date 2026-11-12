@@ -2,8 +2,9 @@
 from datetime import datetime
 from decimal import Decimal
 
-from paseos.reservas.enums import EstadoPago, EstadoReserva, MetodoPago
+from paseos.pagos.enums import EstadoPago, MetodoPago
 from paseos.pagos.excepciones import ConfirmacionInvalidaError, PagoInvalidoError
+from paseos.reservas.enums import EstadoReserva
 
 # Metodos de pago que se confirman a mano:
 METODOS_CON_CONFIRMACION = (MetodoPago.EFECTIVO, MetodoPago.TRANSFERENCIA)
