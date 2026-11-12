@@ -1,6 +1,6 @@
 from config import NUMERO_TARJETA_APROBADA, NUMERO_TARJETA_RECHAZADA
 from paseos.reservas.enums import EstadoPago, MetodoPago
-from excepciones import DatosDePagoInvalidosError
+from paseos.pagos.excepciones import DatosDePagoInvalidosError
 
 
 def procesador_efectivo(pago, datos):

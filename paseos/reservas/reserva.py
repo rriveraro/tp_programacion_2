@@ -1,11 +1,12 @@
 # reserva.py
 from datetime import date, datetime, time, timedelta
-from sqlalchemy.orm import Mapped, composite, mapped_column
+from sqlalchemy import ForeignKey, Mapped, composite , relationship
+from sqlalchemy import mapped_column, Numeric, Decimal, association_proxy
 from config import MINUTOS_CANCELACION_TARDIA
-from db import Base
+from paseos.core.database import Base
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.estados import ESTADOS
-from paseos.reservas.turno import Turno
+from paseos.reservas.turno import Turno, Barrio, Mascota
  
 class Reserva(Base):
     """Reserva de un paseo. El comportamiento depende del estado (patrón State)."""
@@ -13,7 +14,7 @@ class Reserva(Base):
     __tablename__ = "reserva"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    mascota_id: Mapped[int] = mapped_column(foreign_key="mascotas.id", nullable=False)
+    mascota_id: Mapped[int] = mapped_column(ForeignKey('mascotas.id'), nullable=False)
     mascota: Mapped['Mascota'] = relationship() #para que dueño tenga de donde sacarlo
     dueno_id = association_proxy('mascota', 'dueno_id') #para obtener el id del dueño de la mascota sin hacer join
     turno_id: Mapped[int] = composite(Turno, "fecha", "hora_inicio", "hora_fin")

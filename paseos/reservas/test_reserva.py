@@ -4,7 +4,7 @@ from datetime import date, datetime, time
 import pytest
 
 from paseos.reservas.enums import EstadoReserva
-from excepciones import TransicionInvalidaError
+from paseos.pagos.excepciones import TransicionInvalidaError
 from paseos.reservas.reserva import Reserva
 from paseos.reservas.turno import Turno
 
