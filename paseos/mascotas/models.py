@@ -22,16 +22,29 @@ class Mascota(Base):
     def edad(self, hoy: date) -> int:
         """Edad en años cumplidos a la fecha `hoy`
         """
-        cumplio_este_anio = (hoy.month, hoy.day) >= (
+        cumplio_este_year = (hoy.month, hoy.day) >= (
             self.fecha_nacimiento.month,
             self.fecha_nacimiento.day,
         )
         return (
             hoy.year
             - self.fecha_nacimiento.year
-            - (0 if cumplio_este_anio else 1)
+            - (0 if cumplio_este_year else 1)
         )
 
     def tiene_antirrabica_vigente(self, fecha_turno: date) -> bool:
-        """indica si la vacuna antirrábica está vigente a la fecha del turno"""
-        
+        '''indica si la vacuna antirrábica está vigente a la fecha del turno'''
+        if self.fecha_antirrabica is None or fecha_turno < self.fecha_antirrabica:
+            return False
+
+        try:
+            vencimiento = self.fecha_antirrabica.replace(
+                year=self.fecha_antirrabica.year + 1
+            )
+        except ValueError:  # Aplicación el 29 de febrero
+            vencimiento = self.fecha_antirrabica.replace(
+                year=self.fecha_antirrabica.year + 1,
+                day=28,
+            )
+
+        return fecha_turno < vencimiento
