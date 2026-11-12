@@ -1,0 +1,68 @@
+"""Enums del módulo usuarios.
+
+`Barrio` también lo usan otros módulos (por ejemplo, la reserva guarda una
+copia del barrio del dueño), por eso vive en un archivo propio y se importa
+desde acá: `from paseos.usuarios.enums import Barrio, Rol`.
+"""
+
+import enum
+
+
+class Rol(str, enum.Enum):
+    """Rol de la cuenta. Cada usuario tiene un solo rol."""
+
+    DUENO = 'DUENO'
+    PASEADOR = 'PASEADOR'
+
+
+class Barrio(str, enum.Enum):
+    """Los 48 barrios oficiales de la Ciudad Autónoma de Buenos Aires."""
+
+    AGRONOMIA = 'AGRONOMIA'
+    ALMAGRO = 'ALMAGRO'
+    BALVANERA = 'BALVANERA'
+    BARRACAS = 'BARRACAS'
+    BELGRANO = 'BELGRANO'
+    BOEDO = 'BOEDO'
+    CABALLITO = 'CABALLITO'
+    CHACARITA = 'CHACARITA'
+    COGHLAN = 'COGHLAN'
+    COLEGIALES = 'COLEGIALES'
+    CONSTITUCION = 'CONSTITUCION'
+    FLORES = 'FLORES'
+    FLORESTA = 'FLORESTA'
+    LA_BOCA = 'LA_BOCA'
+    LA_PATERNAL = 'LA_PATERNAL'
+    LINIERS = 'LINIERS'
+    MATADEROS = 'MATADEROS'
+    MONTE_CASTRO = 'MONTE_CASTRO'
+    MONSERRAT = 'MONSERRAT'
+    NUEVA_POMPEYA = 'NUEVA_POMPEYA'
+    NUNEZ = 'NUNEZ'
+    PALERMO = 'PALERMO'
+    PARQUE_AVELLANEDA = 'PARQUE_AVELLANEDA'
+    PARQUE_CHACABUCO = 'PARQUE_CHACABUCO'
+    PARQUE_CHAS = 'PARQUE_CHAS'
+    PARQUE_PATRICIOS = 'PARQUE_PATRICIOS'
+    PUERTO_MADERO = 'PUERTO_MADERO'
+    RECOLETA = 'RECOLETA'
+    RETIRO = 'RETIRO'
+    SAAVEDRA = 'SAAVEDRA'
+    SAN_CRISTOBAL = 'SAN_CRISTOBAL'
+    SAN_NICOLAS = 'SAN_NICOLAS'
+    SAN_TELMO = 'SAN_TELMO'
+    VELEZ_SARSFIELD = 'VELEZ_SARSFIELD'
+    VERSALLES = 'VERSALLES'
+    VILLA_CRESPO = 'VILLA_CRESPO'
+    VILLA_DEL_PARQUE = 'VILLA_DEL_PARQUE'
+    VILLA_DEVOTO = 'VILLA_DEVOTO'
+    VILLA_GENERAL_MITRE = 'VILLA_GENERAL_MITRE'
+    VILLA_LUGANO = 'VILLA_LUGANO'
+    VILLA_LURO = 'VILLA_LURO'
+    VILLA_ORTUZAR = 'VILLA_ORTUZAR'
+    VILLA_PUEYRREDON = 'VILLA_PUEYRREDON'
+    VILLA_REAL = 'VILLA_REAL'
+    VILLA_RIACHUELO = 'VILLA_RIACHUELO'
+    VILLA_SANTA_RITA = 'VILLA_SANTA_RITA'
+    VILLA_SOLDATI = 'VILLA_SOLDATI'
+    VILLA_URQUIZA = 'VILLA_URQUIZA'
