@@ -1,4 +1,4 @@
-"""Dependencias de FastAPI compartidas por todos los módulos.
+"""Dependencias de FastAPI compartidas por todos los módulos
 
 `get_usuario_actual` lee el header `Authorization: Bearer <token>`, lo
 decodifica con `security.decode_access_token` y devuelve el Usuario.
