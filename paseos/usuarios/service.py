@@ -83,6 +83,11 @@ class UsuarioService:
         for campo, valor in datos.items():
             setattr(usuario, campo, valor)
         return self.repo.guardar(usuario)
+    
+    def actualizar_password(self, usuario: Usuario, password_hash: str) -> None:
+        """Guarda una contraseña hasheada (hashear lo hace auth)"""
+        usuario.password_hash = password_hash
+        self.repo.guardar(usuario)
 
     def dar_de_baja(self, usuario: Usuario) -> None:
         """Baja lógica. Se rechaza (409) si tiene reservas activas."""

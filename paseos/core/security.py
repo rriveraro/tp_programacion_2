@@ -6,9 +6,8 @@ from datetime import datetime, timedelta, timezone
 from jwt import PyJWTError, decode, encode
 from pwdlib import PasswordHash
 
-from paseos.core.settings import Settings
+from paseos.core.settings import settings
 
-settings = Settings()
 pwd_context = PasswordHash.recommended()
 
 
