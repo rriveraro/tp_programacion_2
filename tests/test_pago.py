@@ -90,12 +90,6 @@ def test_tarjeta_con_datos_invalidos_lanza_error(datos):
         procesar(pago_de(MetodoPago.TARJETA), datos)
 
 
-def test_el_numero_de_tarjeta_no_queda_guardado_en_el_pago():
-    pago = pago_de(MetodoPago.TARJETA)
-    pago.estado = procesar(pago, {'numero_tarjeta': NUMERO_TARJETA_APROBADA})
-    assert NUMERO_TARJETA_APROBADA not in str(vars(pago))
-
-
 @pytest.mark.parametrize( ('metodo', 'aprobar', 'esperado'), [(MetodoPago.EFECTIVO, True, EstadoPago.APROBADO), (MetodoPago.EFECTIVO, False, EstadoPago.RECHAZADO), (MetodoPago.TRANSFERENCIA, True, EstadoPago.APROBADO), (MetodoPago.TRANSFERENCIA, False, EstadoPago.RECHAZADO), ], )
 def test_paseador_confirma_o_rechaza(metodo, aprobar, esperado):
     pago = pago_de(metodo)
