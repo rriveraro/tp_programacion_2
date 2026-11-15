@@ -30,7 +30,7 @@ class Pago(Base):
     __tablename__ = 'pagos'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    reserva_id: Mapped[int | None] = mapped_column(ForeignKey('reservas.id'))
+    reserva_id: Mapped[int | None] = mapped_column(ForeignKey('reserva.id'))
     paseador_id: Mapped[int | None] = mapped_column(ForeignKey('usuarios.id'))
     metodo: Mapped[MetodoPago] = mapped_column(Enum(MetodoPago))
     monto: Mapped[Decimal] = mapped_column(Numeric(10,2))
