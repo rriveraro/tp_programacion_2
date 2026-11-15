@@ -12,7 +12,7 @@
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 
-from sqlalchemy import ForeignKey, Numeric
+from sqlalchemy import Date, ForeignKey, Numeric, Time
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, composite, mapped_column, relationship
 
@@ -20,7 +20,9 @@ from config import MINUTOS_CANCELACION_TARDIA
 from paseos.core.database import Base
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.estados import ESTADOS
-from paseos.reservas.turno import Barrio, Mascota, Turno
+from paseos.reservas.turno import Turno
+from paseos.mascotas.models import Mascota
+from paseos.usuarios.enums import Barrio
 
 
 
@@ -33,9 +35,14 @@ class Reserva(Base):
     mascota_id: Mapped[int] = mapped_column(ForeignKey('mascotas.id'), nullable=False)
     mascota: Mapped['Mascota'] = relationship() #para que dueño tenga de donde sacarlo
     dueno_id = association_proxy('mascota', 'dueno_id') #para obtener el id del dueño de la mascota sin hacer join
-    turno_id: Mapped[int] = composite(Turno, "fecha", "hora_inicio", "hora_fin")
+    turno: Mapped[Turno] = composite(
+        Turno,
+        mapped_column("fecha", Date),
+        mapped_column("hora_inicio", Time),
+        mapped_column("hora_fin", Time),
+    )
     estado: Mapped[EstadoReserva]
-    paseador_id: Mapped[int | None] = mapped_column(foreign_key="usuarios.id", nullable=True)
+    paseador_id: Mapped[int | None] = mapped_column(ForeignKey('usuarios.id'), nullable=True)
     devuelta_en: Mapped[datetime | None]
     devolucion_tardia: Mapped[bool]
     tarifa: Mapped[Decimal] = mapped_column(Numeric(10, 2))
@@ -45,12 +52,26 @@ class Reserva(Base):
     barrio: Mapped[Barrio]
 
 
-    def __init__(self, mascota_id: int, turno: Turno): #no se si sirve pero el estado tiene que ser pendiente
+    def __init__(
+        self, 
+        mascota_id: int, 
+        turno: Turno,
+        tarifa: Decimal | None = None,
+        comision: Decimal | None = None,
+        calle: str | None = None,
+        numero: str | None = None,
+        barrio: Barrio | None = None,
+    ): #no se si sirve pero el estado tiene que ser pendiente
         self.mascota_id = mascota_id
         self.turno = turno
         self.estado = EstadoReserva.PENDIENTE
-        self.paseador_id= None
+        self.paseador_id = None
         self.devolucion_tardia = False
+        self.tarifa = tarifa
+        self.comision = comision
+        self.calle = calle
+        self.numero = numero
+        self.barrio = barrio
 
     @property
     def _state(self):
