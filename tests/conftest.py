@@ -37,6 +37,7 @@ def db():
     yield sesion
     sesion.close()
     Base.metadata.drop_all(engine)
+    engine.dispose()
 
 
 @pytest.fixture

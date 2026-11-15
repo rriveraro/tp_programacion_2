@@ -1,9 +1,11 @@
 # turno.py
 from dataclasses import dataclass
 from datetime import date, datetime, time
-from paseos.pagos.excepciones import TurnoInvalidoError
 
-@dataclass(Frozen=True)
+from paseos.reservas.exceptions import TurnoInvalidoError
+#from paseos.pagos.excepciones import TurnoInvalidoError
+
+@dataclass(frozen=True)
 
 class Turno:
     """Franja de un paseo: un día, una hora de salida y una de llegada."""

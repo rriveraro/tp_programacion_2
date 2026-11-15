@@ -1,13 +1,29 @@
 # reserva.py
+#from datetime import date, datetime, time, timedelta
+#from sqlalchemy import ForeignKey, Mapped, composite , relationship
+#from sqlalchemy import mapped_column, Numeric, Decimal, association_proxy
+#from config import MINUTOS_CANCELACION_TARDIA
+#from paseos.core.database import Base
+#from paseos.reservas.enums import EstadoReserva
+#from paseos.reservas.estados import ESTADOS
+#from paseos.reservas.turno import Turno, Barrio, Mascota
+
+
 from datetime import date, datetime, time, timedelta
-from sqlalchemy import ForeignKey, Mapped, composite , relationship
-from sqlalchemy import mapped_column, Numeric, Decimal, association_proxy
+from decimal import Decimal
+
+from sqlalchemy import ForeignKey, Numeric
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, composite, mapped_column, relationship
+
 from config import MINUTOS_CANCELACION_TARDIA
 from paseos.core.database import Base
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.estados import ESTADOS
-from paseos.reservas.turno import Turno, Barrio, Mascota
- 
+from paseos.reservas.turno import Barrio, Mascota, Turno
+
+
+
 class Reserva(Base):
     """Reserva de un paseo. El comportamiento depende del estado (patrón State)."""
 
