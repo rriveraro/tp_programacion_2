@@ -1,29 +1,17 @@
-# reserva.py
-#from datetime import date, datetime, time, timedelta
-#from sqlalchemy import ForeignKey, Mapped, composite , relationship
-#from sqlalchemy import mapped_column, Numeric, Decimal, association_proxy
-#from config import MINUTOS_CANCELACION_TARDIA
-#from paseos.core.database import Base
-#from paseos.reservas.enums import EstadoReserva
-#from paseos.reservas.estados import ESTADOS
-#from paseos.reservas.turno import Turno, Barrio, Mascota
-
-
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 
-from sqlalchemy import Date, ForeignKey, Numeric, Time
+from sqlalchemy import ForeignKey, Numeric
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, composite, mapped_column, relationship
 
 from config import MINUTOS_CANCELACION_TARDIA
 from paseos.core.database import Base
+from paseos.mascotas.models import Mascota
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.estados import ESTADOS
 from paseos.reservas.turno import Turno
-from paseos.mascotas.models import Mascota
 from paseos.usuarios.enums import Barrio
-
 
 
 class Reserva(Base):
@@ -32,17 +20,20 @@ class Reserva(Base):
     __tablename__ = "reserva"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    mascota_id: Mapped[int] = mapped_column(ForeignKey('mascotas.id'), nullable=False)
-    mascota: Mapped['Mascota'] = relationship() #para que dueño tenga de donde sacarlo
-    dueno_id = association_proxy('mascota', 'dueno_id') #para obtener el id del dueño de la mascota sin hacer join
-    turno: Mapped[Turno] = composite(
-        Turno,
-        mapped_column("fecha", Date),
-        mapped_column("hora_inicio", Time),
-        mapped_column("hora_fin", Time),
-    )
+    mascota_id: Mapped[int] = mapped_column(ForeignKey("mascotas.id"), nullable=False)
+    mascota: Mapped["Mascota"] = relationship()
+    dueno_id = association_proxy("mascota", "dueno_id")
+
+    fecha: Mapped[date]
+    hora_inicio: Mapped[time]
+    hora_fin: Mapped[time]
+    turno: Mapped[Turno] = composite(Turno, "fecha", "hora_inicio", "hora_fin")
+
     estado: Mapped[EstadoReserva]
-    paseador_id: Mapped[int | None] = mapped_column(ForeignKey('usuarios.id'), nullable=True)
+    paseador_id: Mapped[int | None] = mapped_column(
+        ForeignKey("usuarios.id"), nullable=True
+    )
+    creada_en: Mapped[datetime]
     devuelta_en: Mapped[datetime | None]
     devolucion_tardia: Mapped[bool]
     tarifa: Mapped[Decimal] = mapped_column(Numeric(10, 2))
@@ -51,21 +42,22 @@ class Reserva(Base):
     numero: Mapped[str]
     barrio: Mapped[Barrio]
 
-
     def __init__(
-        self, 
-        mascota_id: int, 
+        self,
+        mascota_id: int,
         turno: Turno,
         tarifa: Decimal | None = None,
         comision: Decimal | None = None,
         calle: str | None = None,
         numero: str | None = None,
         barrio: Barrio | None = None,
-    ): #no se si sirve pero el estado tiene que ser pendiente
+        creada_en: datetime | None = None,
+    ):
         self.mascota_id = mascota_id
         self.turno = turno
         self.estado = EstadoReserva.PENDIENTE
         self.paseador_id = None
+        self.creada_en = creada_en or datetime.now()
         self.devolucion_tardia = False
         self.tarifa = tarifa
         self.comision = comision
