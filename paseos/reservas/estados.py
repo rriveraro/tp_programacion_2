@@ -5,7 +5,10 @@ from datetime import timedelta
 
 from config import MINUTOS_EXPIRAR_ANTES
 from paseos.reservas.enums import EstadoReserva
-from paseos.pagos.excepciones import TransicionInvalidaError
+
+# 
+from paseos.reservas.exceptions import TransicionInvalidaError
+#from paseos.pagos.excepciones import TransicionInvalidaError
 
 
 class ReservaState:
