@@ -1,14 +1,19 @@
-# excepciones.py
-class ReservaError(Exception):
-    """Base de las excepciones del módulo de reservas."""
+"""Excepciones de negocio del módulo de reservas."""
+
+from paseos.core.exceptions import Conflicto, SolicitudInvalida
+
+
+class ReservaError(SolicitudInvalida):
+    mensaje = "Error de validación en la reserva"
 
 
 class TurnoInvalidoError(ReservaError):
-    """El turno rompe una regla de negocio."""
+    mensaje = "El turno seleccionado no es válido"
 
 
-class TransicionInvalidaError(ReservaError):
-    """La acción no está permitida en el estado actual de la reserva."""
+class VacunaAntirrabicaNoVigenteError(ReservaError):
+    mensaje = "La mascota no tiene la vacuna antirrábica vigente para la fecha del turno"
 
-class VacunaAntirrabicaNoVigenteError(Exception):
-    pass
+
+class TransicionInvalidaError(Conflicto):
+    mensaje = "La operación no está permitida en el estado actual de la reserva"

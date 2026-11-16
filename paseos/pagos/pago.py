@@ -1,4 +1,5 @@
 # pago.py
+# este es el models de pago
 from datetime import datetime
 from decimal import Decimal
 
