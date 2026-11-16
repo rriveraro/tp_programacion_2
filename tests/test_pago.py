@@ -14,7 +14,7 @@ from paseos.pagos.excepciones import (
 )
 from paseos.pagos.pago import Pago
 from paseos.pagos.procesadores import PROCESADORES, procesar
-from paseos.reservas.reserva import Reserva
+from paseos.reservas.reservas import Reserva
 from paseos.reservas.turno import Turno
 
 AHORA = datetime(2026, 11, 10, 15, 0)
