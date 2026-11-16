@@ -3,7 +3,7 @@
 Heredan de las clases base de paseos.core.exceptions
 """
 
-from paseos.core.exceptions import Conflicto, SolicitudInvalida
+from paseos.core.exceptions import Conflicto, SolicitudInvalida, NoEncontrado, NoAutorizado
 
 
 class PagoInvalidoError(Conflicto):
@@ -22,3 +22,27 @@ class DatosDePagoInvalidosError(SolicitudInvalida):
     """Los datos del medio de pago son inválidos o faltan."""
 
     mensaje = 'Los datos del medio de pago son inválidos o faltan'
+
+
+class PaseadorNoCorrespondeError(NoAutorizado):
+    """Quien confirma no es el paseador de la reserva."""
+
+    mensaje = 'Solo el paseador de la reserva puede confirmar el pago'
+
+
+class PagoNoEncontrado(NoEncontrado):
+    """No existe un pago con ese id."""
+    
+    mensaje = 'Pago no encontrado'
+
+
+class ReservaNoEncontrada(NoEncontrado):
+    """No existe la reserva que se quiere pagar."""
+
+    mensaje = 'Reserva no encontrada'
+
+
+class ReservaYaPagada(Conflicto):
+    """La reserva ya tiene un pago vigente (pendiente o aprobado)."""
+
+    mensaje = 'La reserva ya tiene un pago pendiente o aprobado'
