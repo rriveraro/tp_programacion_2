@@ -4,10 +4,11 @@ que los paseadores vuelvan a aceptar cuadno ya cancelaron una misma reserva."""
 from datetime import datetime
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from paseos.core.database import Base
 from paseos.reservas.enums import AccionEvento
+from paseos.reservas.reservas import Reserva
 
 
 class EventoReserva(Base):
@@ -20,6 +21,7 @@ class EventoReserva(Base):
     usuario_id: Mapped[int | None] = mapped_column(ForeignKey("usuarios.id"), nullable=True)
     accion: Mapped[AccionEvento]
     creado_en: Mapped[datetime]
+    
 
     def __init__(
         self,

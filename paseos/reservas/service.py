@@ -94,9 +94,11 @@ class ReservaService:
         datos: ReservaCrear,
         ahora: datetime | None = None,
     ) -> Reserva:
-        """Crea una reserva en estado PENDIENT"""
+        """Crea una reserva en estado PENDIENTE."""
         instante = self._ahora(ahora)
 
+        if not dueno.activo:
+            raise NoAutorizado("El usuario está dado de baja")
         if dueno.rol != Rol.DUENO:
             raise NoAutorizado("Solo un usuario con rol DUENO puede crear reservas")
 
@@ -131,10 +133,9 @@ class ReservaService:
             barrio=dueno.barrio,
             creada_en=instante,
         )
-        self.repo.guardar(reserva)
 
         evento = EventoReserva(
-            reserva_id=reserva.id,
+            reserva_id=None,  # Se asigna después de guardar la reserva
             accion=AccionEvento.CREADA,
             creado_en=instante,
             usuario_id=dueno.id,
@@ -197,7 +198,7 @@ class ReservaService:
         paseador: Usuario,
         ahora: datetime | None = None,
     ) -> Reserva:
-        """asigna al paseador una reserva pendiente"""
+        """Asigna al paseador una reserva pendiente."""
         instante = self._ahora(ahora)
         if paseador.rol != Rol.PASEADOR:
             raise NoAutorizado(
@@ -207,11 +208,19 @@ class ReservaService:
         self._expirar_vencidas(instante)
         reserva = self._obtener_reserva_o_fallar(reserva_id)
 
+        # 1. Validar estado primero (antes de ir a contar turnos o historial)
+        if reserva.estado != EstadoReserva.PENDIENTE:
+            raise TransicionInvalidaError(
+                f"No se puede aceptar una reserva en estado {reserva.estado.value}"
+            )
+
+        # 2. Regla: no volver a aceptar si ya retiró su aceptación antes
         if self.repo.paseador_cancelo_antes(reserva.id, paseador.id):
             raise TransicionInvalidaError(
                 "No podés volver a aceptar una reserva cuya aceptación ya cancelaste"
             )
 
+        # 3. Regla: tope de perros simultáneos
         aceptadas_en_turno = self.repo.contar_aceptadas_en_turno(
             paseador_id=paseador.id,
             fecha=reserva.turno.fecha,
@@ -262,7 +271,7 @@ class ReservaService:
                 reserva_id=reserva.id,
                 usuario_id=dueno.id,
                 motivo=MotivoPenalidad.CANCELACION_DUENO,
-                monto=reserva.monto_penalidad(),
+                monto=reserva.calcular_penalidad(),
                 creada_en=instante,
             )
             if es_tardia
@@ -302,7 +311,7 @@ class ReservaService:
                 reserva_id=reserva.id,
                 usuario_id=paseador_penalizado_id,
                 motivo=MotivoPenalidad.CANCELACION_PASEADOR,
-                monto=reserva.monto_penalidad(),
+                monto=reserva.calcular_penalidad(),
                 creada_en=instante,
             )
             if es_tardia
