@@ -1,5 +1,3 @@
-"""Schemas Pydantic del módulo mascotas"""
-
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
