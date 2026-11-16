@@ -9,7 +9,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from paseos.reservas.enums import EstadoReserva
+from paseos.reservas.enums import EstadoReserva, MotivoPenalidad
 from paseos.usuarios.enums import Barrio
 
 
@@ -78,3 +78,14 @@ class ReservaDetalleDueno(ReservaBaseSalida):
 
     calle: str
     numero: str
+
+
+class PenalidadSalida(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    reserva_id: int
+    usuario_id: int
+    motivo: MotivoPenalidad
+    monto: Decimal
+    creada_en: datetime

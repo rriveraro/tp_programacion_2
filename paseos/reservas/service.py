@@ -31,6 +31,8 @@ from paseos.reservas.schemas import ReservaCrear
 from paseos.reservas.turno import Turno
 from paseos.usuarios.enums import Barrio, Rol
 from paseos.usuarios.models import Usuario
+from paseos.reservas.enums import MotivoPenalidad
+from paseos.reservas.penalidad import Penalidad
 
 
 class ReservaService:
@@ -236,8 +238,9 @@ class ReservaService:
         dueno: Usuario,
         ahora: datetime | None = None,
     ) -> Reserva:
-        """Cancela una reserva por decisión del dueño"""
+        """Cancela una reserva por decisión del dueño y registra penalidad si es tardía."""
         instante = self._ahora(ahora)
+        self._expirar_vencidas(instante)
         reserva = self._obtener_reserva_o_fallar(reserva_id)
 
         if dueno.rol != Rol.DUENO or reserva.dueno_id != dueno.id:
@@ -245,14 +248,27 @@ class ReservaService:
                 "Solo el dueño de la mascota puede cancelar esta reserva"
             )
 
+        es_tardia = reserva.es_cancelacion_tardia(instante)
         reserva.cancelar_por_dueno(instante)
+
         evento = EventoReserva(
             reserva_id=reserva.id,
             accion=AccionEvento.CANCELADA_DUENO,
             creado_en=instante,
             usuario_id=dueno.id,
         )
-        return self.repo.guardar(reserva, evento)
+        penalidad = (
+            Penalidad(
+                reserva_id=reserva.id,
+                usuario_id=dueno.id,
+                motivo=MotivoPenalidad.CANCELACION_DUENO,
+                monto=reserva.monto_penalidad(),
+                creada_en=instante,
+            )
+            if es_tardia
+            else None
+        )
+        return self.repo.guardar(reserva, evento, penalidad)
 
     def cancelar_aceptacion(
         self,
@@ -260,8 +276,9 @@ class ReservaService:
         paseador: Usuario,
         ahora: datetime | None = None,
     ) -> Reserva:
-        """El paseador retira su aceptación y la reserva vuelve a PENDIENTE"""
+        """El paseador retira su aceptación; si es tardía, registra penalidad al paseador."""
         instante = self._ahora(ahora)
+        self._expirar_vencidas(instante)
         reserva = self._obtener_reserva_o_fallar(reserva_id)
 
         if paseador.rol != Rol.PASEADOR or reserva.paseador_id != paseador.id:
@@ -269,14 +286,35 @@ class ReservaService:
                 "Solo el paseador asignado puede cancelar la aceptación de esta reserva"
             )
 
+        es_tardia = reserva.es_cancelacion_tardia(instante)
+        paseador_penalizado_id = reserva.paseador_id  # Se guarda antes de limpiar paseador_id
+
         reserva.cancelar_aceptacion(instante)
+
         evento = EventoReserva(
             reserva_id=reserva.id,
             accion=AccionEvento.ACEPTACION_CANCELADA,
             creado_en=instante,
             usuario_id=paseador.id,
         )
-        return self.repo.guardar(reserva, evento)
+        penalidad = (
+            Penalidad(
+                reserva_id=reserva.id,
+                usuario_id=paseador_penalizado_id,
+                motivo=MotivoPenalidad.CANCELACION_PASEADOR,
+                monto=reserva.monto_penalidad(),
+                creada_en=instante,
+            )
+            if es_tardia
+            else None
+        )
+        return self.repo.guardar(reserva, evento, penalidad)
+
+    def listar_mis_penalidades(
+        self, usuario: Usuario, ahora: datetime | None = None
+    ) -> list[Penalidad]:
+        """Devuelve las penalidades recibidas por el usuario autenticado."""
+        return self.repo.listar_penalidades_por_usuario(usuario.id)
 
     def finalizar_reserva(
         self,

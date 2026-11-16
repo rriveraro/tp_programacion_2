@@ -6,11 +6,13 @@ from datetime import date, time
 from sqlalchemy import exists, func, or_, select
 from sqlalchemy.orm import Session
 
+import paseos
 from paseos.mascotas.models import Mascota
 from paseos.reservas.enums import AccionEvento, EstadoReserva
 from paseos.reservas.evento import EventoReserva
 from paseos.reservas.reservas import Reserva
 from paseos.usuarios.enums import Barrio
+from paseos.reservas.penalidad import Penalidad
 
 
 ACTIVOS = (EstadoReserva.PENDIENTE, EstadoReserva.ACEPTADA)
@@ -23,14 +25,26 @@ class ReservaRepository:
     def obtener_por_id(self, reserva_id: int) -> Reserva | None:
         return self.db.get(Reserva, reserva_id)
 
-    def guardar(self, reserva: Reserva, evento: EventoReserva | None = None) -> Reserva:
-        """Persiste la reserva (y opcionalmente un evento) en la misma transacción."""
+    def guardar(
+        self,
+        reserva: Reserva,
+        evento: EventoReserva | None = None,
+        penalidad: Penalidad | None = None,
+    ) -> Reserva:
+        """Persiste la reserva, evento y penalidad (si aplica) en la misma transacción."""
         self.db.add(reserva)
         if evento is not None:
             self.db.add(evento)
+        if penalidad is not None:
+            self.db.add(penalidad)
         self.db.commit()
         self.db.refresh(reserva)
         return reserva
+
+    def listar_penalidades_por_usuario(self, usuario_id: int) -> list[Penalidad]:
+        """Lista todas las penalidades recibidas por un usuario."""
+        stmt = select(Penalidad).where(Penalidad.usuario_id == usuario_id)
+        return list(self.db.scalars(stmt).all())
 
     def guardar_varias(
         self, reservas: list[Reserva], eventos: list[EventoReserva]
