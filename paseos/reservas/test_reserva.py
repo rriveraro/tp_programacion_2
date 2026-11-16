@@ -5,7 +5,7 @@ import pytest
 
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.exceptions import TransicionInvalidaError
-from paseos.reservas.reserva import Reserva
+from paseos.reservas.reservas import Reserva
 from paseos.reservas.turno import Turno
 
 AHORA = datetime(2026, 11, 8, 12, 0)
