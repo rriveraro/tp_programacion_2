@@ -11,10 +11,11 @@ from paseos.pagos.excepciones import (
     ConfirmacionInvalidaError,
     DatosDePagoInvalidosError,
     PagoInvalidoError,
+    PaseadorNoCorrespondeError
 )
 from paseos.pagos.pago import Pago
 from paseos.pagos.procesadores import PROCESADORES, procesar
-from paseos.reservas.reserva import Reserva
+from paseos.reservas.reservas import Reserva
 from paseos.reservas.turno import Turno
 
 AHORA = datetime(2026, 11, 10, 15, 0)
@@ -104,7 +105,7 @@ def test_pago_con_tarjeta_no_se_confirma_a_mano():
 
 def test_otro_paseador_no_puede_confirmar():
     pago = pago_de(MetodoPago.EFECTIVO)
-    with pytest.raises(ConfirmacionInvalidaError):
+    with pytest.raises(PaseadorNoCorrespondeError):
         pago.confirmar(PASEADOR + 1, True)
     assert pago.estado == EstadoPago.PENDIENTE
 
