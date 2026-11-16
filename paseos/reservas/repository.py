@@ -6,7 +6,6 @@ from datetime import date, time
 from sqlalchemy import exists, func, or_, select
 from sqlalchemy.orm import Session
 
-import paseos
 from paseos.mascotas.models import Mascota
 from paseos.reservas.enums import AccionEvento, EstadoReserva
 from paseos.reservas.evento import EventoReserva
@@ -31,12 +30,19 @@ class ReservaRepository:
         evento: EventoReserva | None = None,
         penalidad: Penalidad | None = None,
     ) -> Reserva:
-        """Persiste la reserva, evento y penalidad (si aplica) en la misma transacción."""
+        """Persiste la reserva, evento y penalidad en una única transacción."""
         self.db.add(reserva)
+        self.db.flush()  # Genera reserva.id para evitar dos commits si hay evento o penalidad
+
         if evento is not None:
+            if evento.reserva_id is None:
+                evento.reserva_id = reserva.id
             self.db.add(evento)
         if penalidad is not None:
+            if penalidad.reserva_id is None:
+                penalidad.reserva_id = reserva.id
             self.db.add(penalidad)
+
         self.db.commit()
         self.db.refresh(reserva)
         return reserva

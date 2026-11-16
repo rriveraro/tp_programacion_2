@@ -102,80 +102,80 @@ def listar_mis_penalidades(
 
 
 @router.get(
-    "/{id}/domicilio",
+    "/{reserva_id}/domicilio",
     response_model=ReservaDomicilio,
     status_code=status.HTTP_200_OK,
     summary="Obtener domicilio completo de una reserva aceptada",
 )
 def obtener_domicilio_reserva(
-    id: int,
+    reserva_id: int,
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
     ahora: datetime = Depends(get_ahora),
 ):
     """Devuelve calle, número y barrio al paseador asignado mientras la reserva esté ACEPTADA."""
-    return service.obtener_domicilio(reserva_id=id, paseador=usuario, ahora=ahora)
+    return service.obtener_domicilio(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
 
 
 @router.post(
-    "/{id}/aceptar",
+    "/{reserva_id}/aceptar",
     response_model=ReservaPublica,
     status_code=status.HTTP_200_OK,
     summary="Aceptar una reserva pendiente",
 )
 def aceptar_reserva(
-    id: int,
+    reserva_id: int,
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
     ahora: datetime = Depends(get_ahora),
 ):
     """Asigna al paseador autenticado una reserva que se encuentra PENDIENTE."""
-    return service.aceptar_reserva(reserva_id=id, paseador=usuario, ahora=ahora)
+    return service.aceptar_reserva(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
 
 
 @router.post(
-    "/{id}/cancelar",
+    "/{reserva_id}/cancelar",
     response_model=ReservaDetalleDueno,
     status_code=status.HTTP_200_OK,
     summary="Cancelar una reserva (dueño)",
 )
 def cancelar_reserva(
-    id: int,
+    reserva_id: int,
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
     ahora: datetime = Depends(get_ahora),
 ):
     """Permite al dueño de la mascota cancelar su reserva."""
-    return service.cancelar_por_dueno(reserva_id=id, dueno=usuario, ahora=ahora)
+    return service.cancelar_por_dueno(reserva_id=reserva_id, dueno=usuario, ahora=ahora)
 
 
 @router.post(
-    "/{id}/retirar-aceptacion",
+    "/{reserva_id}/retirar-aceptacion",
     response_model=ReservaPublica,
     status_code=status.HTTP_200_OK,
     summary="Retirar aceptación de una reserva (paseador)",
 )
 def retirar_aceptacion_reserva(
-    id: int,
+    reserva_id: int,
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
     ahora: datetime = Depends(get_ahora),
 ):
     """Permite al paseador asignado retirar su aceptación para que la reserva vuelva a PENDIENTE."""
-    return service.cancelar_aceptacion(reserva_id=id, paseador=usuario, ahora=ahora)
+    return service.cancelar_aceptacion(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
 
 
 @router.post(
-    "/{id}/finalizar",
+    "/{reserva_id}/finalizar",
     response_model=ReservaPublica,
     status_code=status.HTTP_200_OK,
     summary="Finalizar una reserva aceptada",
 )
 def finalizar_reserva(
-    id: int,
+    reserva_id: int,
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
     ahora: datetime = Depends(get_ahora),
 ):
     """Marca el paseo como finalizado al devolver la mascota."""
-    return service.finalizar_reserva(reserva_id=id, paseador=usuario, ahora=ahora)
+    return service.finalizar_reserva(reserva_id=reserva_id, paseador=usuario, ahora=ahora)

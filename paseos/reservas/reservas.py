@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, composite, mapped_column, relationship
 from config import MINUTOS_CANCELACION_TARDIA, PORCENTAJE_PENALIDAD
 from paseos.core.database import Base
 from paseos.mascotas.models import Mascota
+from paseos.pagos.tarifa import calcular_penalidad
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.estados import ESTADOS
 from paseos.reservas.turno import Turno
@@ -91,6 +92,11 @@ class Reserva(Base):
     def ganancia_paseador(self) -> Decimal:
         return self.tarifa - self.comision
 
-    def monto_penalidad(self) -> Decimal:
-        """Calcula el monto de penalidad como porcentaje configurable sobre la tarifa."""
-        return (self.tarifa * Decimal(str(PORCENTAJE_PENALIDAD))).quantize(Decimal("0.01"))
+    def ganancia_paseador(self) -> Decimal:
+        return self.tarifa - self.comision
+
+    def calcular_penalidad(self) -> Decimal:
+        """Delega el cálculo y redondeo de la penalidad al módulo de tarifas."""
+        return calcular_penalidad(self.tarifa)
+
+    
