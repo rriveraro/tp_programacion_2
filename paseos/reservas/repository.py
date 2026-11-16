@@ -1,6 +1,4 @@
 """Acceso a datos de reservas y su historial de eventos.
-
-El repositorio es la única capa que habla con SQLAlchemy.
 """
 
 from datetime import date, time
