@@ -11,6 +11,7 @@ from paseos.pagos.enums import EstadoPago, MetodoPago
 from paseos.pagos.excepciones import (
     ConfirmacionInvalidaError, 
     PagoInvalidoError,
+    PaseadorNoCorrespondeError
 )
 from paseos.reservas.enums import EstadoReserva
 
@@ -70,11 +71,9 @@ class Pago(Base):
             raise ConfirmacionInvalidaError(
                 'Un pago con tarjeta no se confirma a mano'
             )
-
         if paseador_id != self.paseador_id:
-            raise ConfirmacionInvalidaError(
-                'Solo el paseador asignado puede confirmar el pago'
-            )
+            raise PaseadorNoCorrespondeError()
+            
 
         # Un pago APROBADO es definitivo. Uno RECHAZADO puede corregirse
         # (el paseador se pudo equivocar), por eso solo se bloquea APROBADO.
