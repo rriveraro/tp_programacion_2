@@ -6,15 +6,15 @@ import pytest
 
 from config import NUMERO_TARJETA_APROBADA, NUMERO_TARJETA_RECHAZADA
 from paseos.pagos.enums import EstadoPago, MetodoPago
-from paseos.reservas.enums import EstadoReserva
 from paseos.pagos.excepciones import (
     ConfirmacionInvalidaError,
     DatosDePagoInvalidosError,
     PagoInvalidoError,
-    PaseadorNoCorrespondeError
+    PaseadorNoCorrespondeError,
 )
 from paseos.pagos.pago import Pago
 from paseos.pagos.procesadores import PROCESADORES, procesar
+from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.reservas import Reserva
 from paseos.reservas.turno import Turno
 
@@ -91,7 +91,7 @@ def test_tarjeta_con_datos_invalidos_lanza_error(datos):
         procesar(pago_de(MetodoPago.TARJETA), datos)
 
 
-@pytest.mark.parametrize( ('metodo', 'aprobar', 'esperado'), [(MetodoPago.EFECTIVO, True, EstadoPago.APROBADO), (MetodoPago.EFECTIVO, False, EstadoPago.RECHAZADO), (MetodoPago.TRANSFERENCIA, True, EstadoPago.APROBADO), (MetodoPago.TRANSFERENCIA, False, EstadoPago.RECHAZADO), ], )
+@pytest.mark.parametrize(('metodo', 'aprobar', 'esperado'), [(MetodoPago.EFECTIVO, True, EstadoPago.APROBADO), (MetodoPago.EFECTIVO, False, EstadoPago.RECHAZADO), (MetodoPago.TRANSFERENCIA, True, EstadoPago.APROBADO), (MetodoPago.TRANSFERENCIA, False, EstadoPago.RECHAZADO), ], )
 def test_paseador_confirma_o_rechaza(metodo, aprobar, esperado):
     pago = pago_de(metodo)
     pago.confirmar(PASEADOR, aprobar)

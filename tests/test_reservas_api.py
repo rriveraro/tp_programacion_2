@@ -1,6 +1,7 @@
 from datetime import datetime
-from fastapi.testclient import TestClient
+
 import pytest
+from fastapi.testclient import TestClient
 
 from config import MAX_PERROS_SIMULTANEOS
 from paseos.app import app

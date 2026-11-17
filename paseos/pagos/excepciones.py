@@ -3,7 +3,12 @@
 Heredan de las clases base de paseos.core.exceptions
 """
 
-from paseos.core.exceptions import Conflicto, SolicitudInvalida, NoEncontrado, NoAutorizado
+from paseos.core.exceptions import (
+    Conflicto,
+    NoAutorizado,
+    NoEncontrado,
+    SolicitudInvalida,
+)
 
 
 class PagoInvalidoError(Conflicto):
@@ -32,7 +37,7 @@ class PaseadorNoCorrespondeError(NoAutorizado):
 
 class PagoNoEncontrado(NoEncontrado):
     """No existe un pago con ese id."""
-    
+
     mensaje = 'Pago no encontrado'
 
 

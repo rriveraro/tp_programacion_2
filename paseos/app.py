@@ -1,27 +1,25 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+
+from fastapi import Depends, FastAPI
+from sqlalchemy.orm import Session
 
 from paseos.auth.router import router as auth_router
-from paseos.core.database import Base, engine
+from paseos.core.database import Base, engine, get_db
 from paseos.core.exceptions import registrar_manejadores
+from paseos.mascotas.models import Mascota  # noqa: F401
 from paseos.mascotas.router import router as mascotas_router
 from paseos.pagos.router import router as pagos_router
-from paseos.reservas.router import router as reservas_router
-from paseos.usuarios.router import router as usuarios_router
-from paseos.usuarios.repository import UsuarioRepository
-from paseos.usuarios.router import get_usuario_service
-from sqlalchemy.orm import Session
+from paseos.reservas.evento import EventoReserva  # noqa: F401
+from paseos.reservas.penalidad import Penalidad  # noqa: F401
 from paseos.reservas.repository import ReservaRepository
-from fastapi import Depends
-from paseos.core.database import Base, engine, get_db
+from paseos.reservas.reservas import Reserva  # noqa: F401
+from paseos.reservas.router import router as reservas_router
 
 # Importar todos los modelos antes de create_all para registrarlos en Base.metadata
 from paseos.usuarios.models import Usuario  # noqa: F401
-from paseos.mascotas.models import Mascota  # noqa: F401
-from paseos.reservas.reservas import Reserva  # noqa: F401
-from paseos.reservas.evento import EventoReserva  # noqa: F401
-from paseos.reservas.penalidad import Penalidad  # noqa: F401
-from paseos.pagos.pago import Pago
+from paseos.usuarios.repository import UsuarioRepository
+from paseos.usuarios.router import get_usuario_service
+from paseos.usuarios.router import router as usuarios_router
 from paseos.usuarios.service import UsuarioService  # noqa: F401
 
 
@@ -40,6 +38,7 @@ app.include_router(mascotas_router)
 app.include_router(reservas_router)
 app.include_router(pagos_router)
 
+
 # Composition Root: inyecta la verificación de reservas activas en usuarios sin import circular
 def _get_usuario_service_con_reservas(db: Session = Depends(get_db)) -> UsuarioService:
     return UsuarioService(
@@ -50,6 +49,7 @@ def _get_usuario_service_con_reservas(db: Session = Depends(get_db)) -> UsuarioS
 
 
 app.dependency_overrides[get_usuario_service] = _get_usuario_service_con_reservas
+
 
 @app.get("/")
 def read_root():

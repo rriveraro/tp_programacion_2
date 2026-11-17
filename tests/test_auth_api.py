@@ -37,7 +37,7 @@ def test_registro_con_mail_repetido(client):
     # verificamos que entre en conflicto:
     assert (
         respuesta.status_code == HTTPStatus.CONFLICT
-    )  
+    )
 
 
 def test_registro_de_un_menor(client):

@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey, Numeric
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, composite, mapped_column, relationship
 
-from config import MINUTOS_CANCELACION_TARDIA, PORCENTAJE_PENALIDAD
+from config import MINUTOS_CANCELACION_TARDIA
 from paseos.core.database import Base
 from paseos.mascotas.models import Mascota
 from paseos.pagos.tarifa import calcular_penalidad
@@ -88,7 +88,7 @@ class Reserva(Base):
     def es_cancelacion_tardia(self, ahora: datetime) -> bool:
         limite = self.turno.inicio - timedelta(minutes=MINUTOS_CANCELACION_TARDIA)
         return ahora >= limite
-    
+
     def ganancia_paseador(self) -> Decimal:
         return self.tarifa - self.comision
 
@@ -98,5 +98,3 @@ class Reserva(Base):
     def calcular_penalidad(self) -> Decimal:
         """Delega el cálculo y redondeo de la penalidad al módulo de tarifas."""
         return calcular_penalidad(self.tarifa)
-
-    

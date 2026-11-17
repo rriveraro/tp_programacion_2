@@ -7,6 +7,7 @@ from config import MINUTOS_EXPIRAR_ANTES
 from paseos.reservas.enums import EstadoReserva
 from paseos.reservas.exceptions import TransicionInvalidaError
 
+
 class ReservaState:
 
     def _prohibido(self, reserva, accion: str):

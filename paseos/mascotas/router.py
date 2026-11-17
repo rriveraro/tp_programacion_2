@@ -4,7 +4,11 @@ from sqlalchemy.orm import Session
 from paseos.core.database import get_db
 from paseos.core.dependencies import get_usuario_actual
 from paseos.mascotas.repository import MascotaRepository
-from paseos.mascotas.schemas import MascotaActualizar, MascotaCrear, MascotaPublica
+from paseos.mascotas.schemas import (
+    MascotaActualizar,
+    MascotaCrear,
+    MascotaPublica,
+)
 from paseos.mascotas.service import MascotaService
 from paseos.reservas.repository import ReservaRepository
 from paseos.usuarios.models import Usuario

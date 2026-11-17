@@ -3,17 +3,18 @@ from dataclasses import dataclass
 from datetime import date, datetime, time
 
 from paseos.reservas.exceptions import TurnoInvalidoError
-#from paseos.pagos.excepciones import TurnoInvalidoError
+
+# from paseos.pagos.excepciones import TurnoInvalidoError
+
 
 @dataclass(frozen=True)
-
 class Turno:
     """Franja de un paseo: un día, una hora de salida y una de llegada."""
 
     fecha: date
     hora_inicio: time
     hora_fin: time
- 
+
     def __post_init__(self):
         if self.hora_fin <= self.hora_inicio:
             raise TurnoInvalidoError("El turno no puede terminar antes de empezar")

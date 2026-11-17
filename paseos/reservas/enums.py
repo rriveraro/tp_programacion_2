@@ -1,12 +1,14 @@
 # enums.py
 from enum import Enum
 
+
 class EstadoReserva(Enum):
     PENDIENTE = "PENDIENTE"
     ACEPTADA = "ACEPTADA"
     CANCELADA = "CANCELADA"
     EXPIRADA = "EXPIRADA"
     FINALIZADA = "FINALIZADA"
+
 
 # Utilizados en evento.py
 class AccionEvento(Enum):
@@ -16,6 +18,7 @@ class AccionEvento(Enum):
     ACEPTACION_CANCELADA = "ACEPTACION_CANCELADA"
     EXPIRADA = "EXPIRADA"
     FINALIZADA = "FINALIZADA"
+
 
 class MotivoPenalidad(str, Enum):
     CANCELACION_DUENO = "CANCELACION_DUENO"

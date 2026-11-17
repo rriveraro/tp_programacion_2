@@ -4,8 +4,7 @@ Reserva, el registro de auditoría en EventoReserva y la persistencia mediante
 ReservaRepository y MascotaRepository.
 """
 
-from datetime import datetime, time, timedelta
-
+from datetime import datetime, timedelta
 
 from config import (
     HORA_MAXIMA_PASEO,
@@ -14,25 +13,23 @@ from config import (
     MAX_PERROS_SIMULTANEOS,
     MINUTOS_EXPIRAR_ANTES,
 )
-
 from paseos.core.exceptions import NoAutorizado, NoEncontrado
 from paseos.mascotas.repository import MascotaRepository
 from paseos.pagos.tarifa import calcular_comision, calcular_tarifa
-from paseos.reservas.enums import AccionEvento, EstadoReserva
+from paseos.reservas.enums import AccionEvento, EstadoReserva, MotivoPenalidad
 from paseos.reservas.evento import EventoReserva
 from paseos.reservas.exceptions import (
     TransicionInvalidaError,
     TurnoInvalidoError,
     VacunaAntirrabicaNoVigenteError,
 )
+from paseos.reservas.penalidad import Penalidad
 from paseos.reservas.repository import ReservaRepository
 from paseos.reservas.reservas import Reserva
 from paseos.reservas.schemas import ReservaCrear
 from paseos.reservas.turno import Turno
 from paseos.usuarios.enums import Barrio, Rol
 from paseos.usuarios.models import Usuario
-from paseos.reservas.enums import MotivoPenalidad
-from paseos.reservas.penalidad import Penalidad
 
 
 class ReservaService:

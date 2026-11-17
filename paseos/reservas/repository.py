@@ -9,10 +9,9 @@ from sqlalchemy.orm import Session
 from paseos.mascotas.models import Mascota
 from paseos.reservas.enums import AccionEvento, EstadoReserva
 from paseos.reservas.evento import EventoReserva
+from paseos.reservas.penalidad import Penalidad
 from paseos.reservas.reservas import Reserva
 from paseos.usuarios.enums import Barrio
-from paseos.reservas.penalidad import Penalidad
-
 
 ACTIVOS = (EstadoReserva.PENDIENTE, EstadoReserva.ACEPTADA)
 
@@ -58,7 +57,7 @@ class ReservaRepository:
         """Actualiza múltiples reservas y sus eventos en una única transacción."""
         self.db.add_all(reservas)
         self.db.add_all(eventos)
-        self.db.commit() #No hay refresh, ya existian estas reservas
+        self.db.commit()  # No hay refresh, ya existian estas reservas
 
     def listar_pendientes(self, barrio: Barrio | None = None) -> list[Reserva]:
         """Lista las reservas pendientes, opcionalmente filtradas por barrio."""

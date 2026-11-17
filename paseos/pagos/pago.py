@@ -9,9 +9,9 @@ from sqlalchemy.orm import Mapped, mapped_column
 from paseos.core.database import Base
 from paseos.pagos.enums import EstadoPago, MetodoPago
 from paseos.pagos.excepciones import (
-    ConfirmacionInvalidaError, 
+    ConfirmacionInvalidaError,
     PagoInvalidoError,
-    PaseadorNoCorrespondeError
+    PaseadorNoCorrespondeError,
 )
 from paseos.reservas.enums import EstadoReserva
 
@@ -35,7 +35,7 @@ class Pago(Base):
     reserva_id: Mapped[int | None] = mapped_column(ForeignKey('reserva.id'))
     paseador_id: Mapped[int | None] = mapped_column(ForeignKey('usuarios.id'))
     metodo: Mapped[MetodoPago] = mapped_column(Enum(MetodoPago))
-    monto: Mapped[Decimal] = mapped_column(Numeric(10,2))
+    monto: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     estado: Mapped[EstadoPago] = mapped_column(Enum(EstadoPago))
     creado_en: Mapped[datetime]
 
@@ -63,7 +63,6 @@ class Pago(Base):
         self.estado = EstadoPago.PENDIENTE
         self.creado_en = ahora
 
-
     def confirmar(self, paseador_id: int, aprobar: bool) -> None:
         """El paseador aprueba o rechaza el pago pendiente"""
 
@@ -73,7 +72,6 @@ class Pago(Base):
             )
         if paseador_id != self.paseador_id:
             raise PaseadorNoCorrespondeError()
-            
 
         # Un pago APROBADO es definitivo. Uno RECHAZADO puede corregirse
         # (el paseador se pudo equivocar), por eso solo se bloquea APROBADO.

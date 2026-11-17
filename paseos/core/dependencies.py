@@ -22,9 +22,11 @@ from paseos.usuarios.repository import UsuarioRepository
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
+
 def get_ahora() -> datetime:
     """Devuelve la fecha y hora actual (sobreescribible en tests con dependency_overrides)."""
     return datetime.now()
+
 
 def get_usuario_actual(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)

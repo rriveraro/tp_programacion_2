@@ -47,6 +47,7 @@ def ver_pago(
     ):
     return service.obtener_pago(usuario, pago_id)
 
+
 @router.post('/{pago_id}/confirmar', response_model=PagoPublico)
 def confirmar(
     pago_id: int,

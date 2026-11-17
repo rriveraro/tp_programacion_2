@@ -1,10 +1,13 @@
-#mascota.py
+# mascota.py
+
+from datetime import date
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from paseos.mascotas.enums import Tamaño
-from datetime import date
+
 from paseos.core.database import Base
+from paseos.mascotas.enums import Tamaño
+
 
 class Mascota(Base):
     """Representa una mascota que puede ser paseada."""
