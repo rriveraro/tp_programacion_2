@@ -1,7 +1,13 @@
 """Tests de los endpoints /usuarios/me."""
 
+from datetime import date, time
+from decimal import Decimal
 from http import HTTPStatus
 
+from paseos.mascotas.enums import Tamaño  # noqa: PLC2403
+from paseos.mascotas.models import Mascota
+from paseos.reservas.reservas import Reserva
+from paseos.reservas.turno import Turno
 from tests.conftest import headers_de
 
 
@@ -63,4 +69,36 @@ def test_baja_y_el_token_deja_de_servir(client, dueno):
     assert (
         client.get('/usuarios/me', headers=headers).status_code
         == HTTPStatus.UNAUTHORIZED
+    )
+
+
+def test_baja_rechazada_si_tiene_una_reserva_pendiente(client, db, dueno):
+    """Prueba la conexión real con reservas (sin verificador falso)."""
+    mascota = Mascota(
+        dueno_id=dueno.id,
+        nombre='Firulais',
+        fecha_nacimiento=date(2020, 1, 1),
+        tamaño=Tamaño.MEDIANO,
+        raza='Mestizo',
+    )
+    db.add(mascota)
+    db.commit()
+    reserva = Reserva(
+        mascota_id=mascota.id,
+        turno=Turno(date(2026, 12, 1), time(10), time(11)),
+        tarifa=Decimal('9600'),
+        comision=Decimal('1440'),
+        calle=dueno.calle,
+        numero=dueno.numero,
+        barrio=dueno.barrio,
+    )
+    db.add(reserva)
+    db.commit()
+
+    headers = headers_de(dueno)
+    respuesta = client.delete('/usuarios/me', headers=headers)
+
+    assert respuesta.status_code == HTTPStatus.CONFLICT
+    assert client.get('/usuarios/me', headers=headers).status_code == (
+        HTTPStatus.OK
     )
