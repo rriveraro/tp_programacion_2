@@ -42,10 +42,10 @@ app.include_router(pagos_router)
 
 # Composition Root: inyecta la verificación de reservas activas en usuarios sin import circular
 def _get_usuario_service_con_reservas(db: Session = Depends(get_db)) -> UsuarioService:
-    reserva_repo = ReservaRepository(db)
     return UsuarioService(
         repo=UsuarioRepository(db),
-        tiene_reservas_activas=lambda usuario: reserva_repo.tiene_reservas_activas_usuario(usuario.id),
+        # El servicio pasa el Usuario; el repositorio de reservas espera el id.
+        tiene_reservas_activas=lambda usuario: ReservaRepository(db).tiene_reservas_activas_usuario(usuario.id),
     )
 
 

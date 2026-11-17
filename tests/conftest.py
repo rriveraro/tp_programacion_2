@@ -44,7 +44,9 @@ def db():
 def client(db):
     app.dependency_overrides[get_db] = lambda: db
     yield TestClient(app)
-    app.dependency_overrides.clear()
+    # Solo se quita lo que agregó este fixture: clear() borraría también
+    # los overrides de app.py (por ejemplo, la conexión usuarios-reservas).
+    app.dependency_overrides.pop(get_db, None)
 
 
 @pytest.fixture
