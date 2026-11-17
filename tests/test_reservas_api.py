@@ -416,7 +416,7 @@ def test_errores_validacion_al_crear_reserva(
     errores_regla = (
         status.HTTP_400_BAD_REQUEST,
         status.HTTP_409_CONFLICT,
-        status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status.HTTP_422_UNPROCESSABLE_CONTENT,
     )
 
     # 1. Rol equivocado (paseador intentando crear reserva) -> 403

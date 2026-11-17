@@ -96,9 +96,6 @@ class Reserva(Base):
     def ganancia_paseador(self) -> Decimal:
         return self.tarifa - self.comision
 
-    def ganancia_paseador(self) -> Decimal:
-        return self.tarifa - self.comision
-
     def calcular_penalidad(self) -> Decimal:
         """Delega el cálculo y redondeo de la penalidad al módulo de tarifas."""
         return calcular_penalidad(self.tarifa)
