@@ -28,11 +28,8 @@ class PagoService:
         self.reservas = reservas
 
     def crear_pago(
-            self,
-            usuario: Usuario,
-            datos: CrearPago,
-            ahora: datetime
-            ) -> Pago:
+        self, usuario: Usuario, datos: CrearPago, ahora: datetime
+    ) -> Pago:
         reserva = self.reservas.obtener_por_id(datos.reserva_id)
         if reserva is None:
             raise ReservaNoEncontrada()
@@ -46,11 +43,8 @@ class PagoService:
         return self.repo.guardar(pago)
 
     def confirmar_pago(
-            self,
-            usuario: Usuario,
-            pago_id: int,
-            aprobar: bool
-            ) -> Pago:
+        self, usuario: Usuario, pago_id: int, aprobar: bool
+    ) -> Pago:
         """El paseador de la reserva aprueba o rechaza el pago."""
         pago = self._obtener(pago_id)
         pago.confirmar(usuario.id, aprobar)

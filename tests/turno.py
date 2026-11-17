@@ -17,7 +17,9 @@ class Turno:
 
     def __post_init__(self):
         if self.hora_fin <= self.hora_inicio:
-            raise TurnoInvalidoError("El turno no puede terminar antes de empezar")
+            raise TurnoInvalidoError(
+                'El turno no puede terminar antes de empezar'
+            )
 
     @property
     def inicio(self) -> datetime:
@@ -30,4 +32,4 @@ class Turno:
     def validar_turno(self, ahora: datetime) -> None:
         """Regla que depende del tiempo: `ahora` llega desde afuera para poder testearla."""
         if self.inicio <= ahora:
-            raise TurnoInvalidoError("El turno no puede empezar en el pasado")
+            raise TurnoInvalidoError('El turno no puede empezar en el pasado')

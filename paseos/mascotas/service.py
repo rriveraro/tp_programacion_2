@@ -16,20 +16,28 @@ class MascotaService:
         self.repo = repo
         self.reserva_repo = reserva_repo
 
-    def _obtener_mascota_de_dueno(self, mascota_id: int, dueno: Usuario) -> Mascota:
+    def _obtener_mascota_de_dueno(
+        self, mascota_id: int, dueno: Usuario
+    ) -> Mascota:
         if dueno.rol != Rol.DUENO:
-            raise NoAutorizado("Solo un usuario con rol DUENO puede gestionar mascotas")
+            raise NoAutorizado(
+                'Solo un usuario con rol DUENO puede gestionar mascotas'
+            )
 
         mascota = self.repo.obtener_por_id(mascota_id)
         if mascota is None:
-            raise NoEncontrado(f"No existe la mascota con id {mascota_id}")
+            raise NoEncontrado(f'No existe la mascota con id {mascota_id}')
         if mascota.dueno_id != dueno.id:
-            raise NoAutorizado("La mascota no pertenece al dueño autenticado")
+            raise NoAutorizado('La mascota no pertenece al dueño autenticado')
         return mascota
 
-    def registrar_mascota(self, dueno: Usuario, datos: MascotaCrear) -> Mascota:
+    def registrar_mascota(
+        self, dueno: Usuario, datos: MascotaCrear
+    ) -> Mascota:
         if dueno.rol != Rol.DUENO:
-            raise NoAutorizado("Solo un usuario con rol DUENO puede registrar mascotas")
+            raise NoAutorizado(
+                'Solo un usuario con rol DUENO puede registrar mascotas'
+            )
 
         mascota = Mascota(
             dueno_id=dueno.id,
@@ -43,7 +51,9 @@ class MascotaService:
 
     def listar_mis_mascotas(self, dueno: Usuario) -> list[Mascota]:
         if dueno.rol != Rol.DUENO:
-            raise NoAutorizado("Solo un usuario con rol DUENO puede consultar sus mascotas")
+            raise NoAutorizado(
+                'Solo un usuario con rol DUENO puede consultar sus mascotas'
+            )
         return self.repo.listar_por_dueno(dueno.id)
 
     def obtener_mascota(self, mascota_id: int, dueno: Usuario) -> Mascota:
@@ -63,11 +73,12 @@ class MascotaService:
     def eliminar_mascota(self, mascota_id: int, dueno: Usuario) -> None:
         mascota = self._obtener_mascota_de_dueno(mascota_id, dueno)
 
-        if self.reserva_repo and self.reserva_repo.tiene_reservas_activas_mascota(
-            mascota.id
+        if (
+            self.reserva_repo
+            and self.reserva_repo.tiene_reservas_activas_mascota(mascota.id)
         ):
             raise Conflicto(
-                "No se puede eliminar una mascota que tiene reservas pendientes o aceptadas"
+                'No se puede eliminar una mascota que tiene reservas pendientes o aceptadas'
             )
 
         self.repo.eliminar(mascota)

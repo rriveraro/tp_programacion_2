@@ -20,9 +20,7 @@ def login(client, email='ana@mail.com', password=PASSWORD):
 def test_registro_devuelve_el_usuario_sin_contra(client):
     respuesta = registrar(client)
     # verifica que la api respondio 201 created:
-    assert (
-        respuesta.status_code == HTTPStatus.CREATED
-    )
+    assert respuesta.status_code == HTTPStatus.CREATED
     cuerpo = respuesta.json()
     # verificamos lo que devuelve y no devuelve:
     assert cuerpo['email'] == 'ana@mail.com'
@@ -35,9 +33,7 @@ def test_registro_con_mail_repetido(client):
     registrar(client)
     respuesta = registrar(client, dni='40111222')
     # verificamos que entre en conflicto:
-    assert (
-        respuesta.status_code == HTTPStatus.CONFLICT
-    )
+    assert respuesta.status_code == HTTPStatus.CONFLICT
 
 
 def test_registro_de_un_menor(client):

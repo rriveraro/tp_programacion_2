@@ -49,13 +49,13 @@ class Pago(Base):
         if monto <= 0:
             raise PagoInvalidoError('El monto debe ser mayor a cero')
 
-        '''
+        """
         self.reserva = reserva
         self.metodo = metodo
         self.monto = monto
         self.estado = EstadoPago.PENDIENTE
         self.creado_en = ahora
-        '''
+        """
         self.reserva_id = reserva.id
         self.paseador_id = reserva.paseador_id
         self.metodo = metodo

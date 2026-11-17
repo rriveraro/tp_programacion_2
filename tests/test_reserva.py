@@ -26,7 +26,9 @@ def test_reserva_nace_pendiente_sin_paseador():
     assert reserva.paseador_id is None
 
 
-@pytest.mark.parametrize("estado", [EstadoReserva.PENDIENTE, EstadoReserva.ACEPTADA])
+@pytest.mark.parametrize(
+    'estado', [EstadoReserva.PENDIENTE, EstadoReserva.ACEPTADA]
+)
 def test_dueno_cancela_reserva_activa(estado):
     reserva = reserva_en(estado)
     reserva.cancelar_por_dueno(AHORA)
@@ -68,8 +70,12 @@ def test_expirar_pasado_el_limite():
 
 
 @pytest.mark.parametrize(
-    "estado",
-    [EstadoReserva.CANCELADA, EstadoReserva.EXPIRADA, EstadoReserva.FINALIZADA],
+    'estado',
+    [
+        EstadoReserva.CANCELADA,
+        EstadoReserva.EXPIRADA,
+        EstadoReserva.FINALIZADA,
+    ],
 )
 def test_estados_finales_no_permiten_acciones(estado):
     reserva = reserva_en(estado)
@@ -87,7 +93,9 @@ def test_no_se_puede_finalizar_una_reserva_pendiente():
 def test_cancelacion_tardia():
     reserva = reserva_en(EstadoReserva.ACEPTADA, paseador_id=7)
     assert reserva.es_cancelacion_tardia(AHORA) is False
-    assert reserva.es_cancelacion_tardia(datetime(2026, 11, 10, 12, 45)) is True
+    assert (
+        reserva.es_cancelacion_tardia(datetime(2026, 11, 10, 12, 45)) is True
+    )
 
 
 def test_aceptar_reserva_pendiente():

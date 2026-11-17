@@ -68,7 +68,9 @@ def test_hay_un_procesador_por_cada_metodo_de_pago():
     assert set(PROCESADORES) == set(MetodoPago)
 
 
-@pytest.mark.parametrize('metodo', [MetodoPago.EFECTIVO, MetodoPago.TRANSFERENCIA])
+@pytest.mark.parametrize(
+    'metodo', [MetodoPago.EFECTIVO, MetodoPago.TRANSFERENCIA]
+)
 def test_efectivo_y_transferencia_quedan_pendientes(metodo):
     assert procesar(pago_de(metodo)) == EstadoPago.PENDIENTE
 
@@ -91,7 +93,15 @@ def test_tarjeta_con_datos_invalidos_lanza_error(datos):
         procesar(pago_de(MetodoPago.TARJETA), datos)
 
 
-@pytest.mark.parametrize(('metodo', 'aprobar', 'esperado'), [(MetodoPago.EFECTIVO, True, EstadoPago.APROBADO), (MetodoPago.EFECTIVO, False, EstadoPago.RECHAZADO), (MetodoPago.TRANSFERENCIA, True, EstadoPago.APROBADO), (MetodoPago.TRANSFERENCIA, False, EstadoPago.RECHAZADO), ], )
+@pytest.mark.parametrize(
+    ('metodo', 'aprobar', 'esperado'),
+    [
+        (MetodoPago.EFECTIVO, True, EstadoPago.APROBADO),
+        (MetodoPago.EFECTIVO, False, EstadoPago.RECHAZADO),
+        (MetodoPago.TRANSFERENCIA, True, EstadoPago.APROBADO),
+        (MetodoPago.TRANSFERENCIA, False, EstadoPago.RECHAZADO),
+    ],
+)
 def test_paseador_confirma_o_rechaza(metodo, aprobar, esperado):
     pago = pago_de(metodo)
     pago.confirmar(PASEADOR, aprobar)

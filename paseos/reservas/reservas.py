@@ -18,21 +18,23 @@ from paseos.usuarios.enums import Barrio
 class Reserva(Base):
     """Reserva de un paseo. El comportamiento depende del estado (patrón State)."""
 
-    __tablename__ = "reserva"
+    __tablename__ = 'reserva'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    mascota_id: Mapped[int] = mapped_column(ForeignKey("mascotas.id"), nullable=False)
-    mascota: Mapped["Mascota"] = relationship()
-    dueno_id = association_proxy("mascota", "dueno_id")
+    mascota_id: Mapped[int] = mapped_column(
+        ForeignKey('mascotas.id'), nullable=False
+    )
+    mascota: Mapped['Mascota'] = relationship()
+    dueno_id = association_proxy('mascota', 'dueno_id')
 
     fecha: Mapped[date]
     hora_inicio: Mapped[time]
     hora_fin: Mapped[time]
-    turno: Mapped[Turno] = composite(Turno, "fecha", "hora_inicio", "hora_fin")
+    turno: Mapped[Turno] = composite(Turno, 'fecha', 'hora_inicio', 'hora_fin')
 
     estado: Mapped[EstadoReserva]
     paseador_id: Mapped[int | None] = mapped_column(
-        ForeignKey("usuarios.id"), nullable=True
+        ForeignKey('usuarios.id'), nullable=True
     )
     creada_en: Mapped[datetime]
     devuelta_en: Mapped[datetime | None]
@@ -86,7 +88,9 @@ class Reserva(Base):
         self._state.finalizar(self, ahora)
 
     def es_cancelacion_tardia(self, ahora: datetime) -> bool:
-        limite = self.turno.inicio - timedelta(minutes=MINUTOS_CANCELACION_TARDIA)
+        limite = self.turno.inicio - timedelta(
+            minutes=MINUTOS_CANCELACION_TARDIA
+        )
         return ahora >= limite
 
     def ganancia_paseador(self) -> Decimal:

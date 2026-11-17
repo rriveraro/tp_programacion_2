@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="API Gestión de Paseos Caninos", lifespan=lifespan)
+app = FastAPI(title='API Gestión de Paseos Caninos', lifespan=lifespan)
 registrar_manejadores(app)
 
 app.include_router(auth_router)
@@ -40,17 +40,23 @@ app.include_router(pagos_router)
 
 
 # Composition Root: inyecta la verificación de reservas activas en usuarios sin import circular
-def _get_usuario_service_con_reservas(db: Session = Depends(get_db)) -> UsuarioService:
+def _get_usuario_service_con_reservas(
+    db: Session = Depends(get_db),
+) -> UsuarioService:
     return UsuarioService(
         repo=UsuarioRepository(db),
         # El servicio pasa el Usuario; el repositorio de reservas espera el id.
-        tiene_reservas_activas=lambda usuario: ReservaRepository(db).tiene_reservas_activas_usuario(usuario.id),
+        tiene_reservas_activas=lambda usuario: ReservaRepository(
+            db
+        ).tiene_reservas_activas_usuario(usuario.id),
     )
 
 
-app.dependency_overrides[get_usuario_service] = _get_usuario_service_con_reservas
+app.dependency_overrides[get_usuario_service] = (
+    _get_usuario_service_con_reservas
+)
 
 
-@app.get("/")
+@app.get('/')
 def read_root():
-    return {"message": "Hola Mundo!"}
+    return {'message': 'Hola Mundo!'}

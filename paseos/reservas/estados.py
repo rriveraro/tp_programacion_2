@@ -9,26 +9,25 @@ from paseos.reservas.exceptions import TransicionInvalidaError
 
 
 class ReservaState:
-
     def _prohibido(self, reserva, accion: str):
         raise TransicionInvalidaError(
-            f"No se puede {accion} una reserva en estado {reserva.estado.value}"
+            f'No se puede {accion} una reserva en estado {reserva.estado.value}'
         )
 
     def aceptar(self, reserva, paseador_id, ahora):
-        self._prohibido(reserva, "aceptar")
+        self._prohibido(reserva, 'aceptar')
 
     def cancelar_por_dueno(self, reserva, ahora):
-        self._prohibido(reserva, "cancelar")
+        self._prohibido(reserva, 'cancelar')
 
     def cancelar_aceptacion(self, reserva, ahora):
-        self._prohibido(reserva, "retirar la aceptación de")
+        self._prohibido(reserva, 'retirar la aceptación de')
 
     def expirar(self, reserva, ahora):
-        self._prohibido(reserva, "expirar")
+        self._prohibido(reserva, 'expirar')
 
     def finalizar(self, reserva, ahora):
-        self._prohibido(reserva, "finalizar")
+        self._prohibido(reserva, 'finalizar')
 
 
 def _limite_de_vencimiento(reserva):
@@ -39,7 +38,9 @@ def _limite_de_vencimiento(reserva):
 class PendienteState(ReservaState):
     def aceptar(self, reserva, paseador_id, ahora):
         if ahora >= _limite_de_vencimiento(reserva):
-            raise TransicionInvalidaError("La reserva ya venció, no se puede aceptar")
+            raise TransicionInvalidaError(
+                'La reserva ya venció, no se puede aceptar'
+            )
         reserva.paseador_id = paseador_id
         reserva.estado = EstadoReserva.ACEPTADA
 
@@ -48,7 +49,7 @@ class PendienteState(ReservaState):
 
     def expirar(self, reserva, ahora):
         if ahora < _limite_de_vencimiento(reserva):
-            raise TransicionInvalidaError("La reserva todavía no venció")
+            raise TransicionInvalidaError('La reserva todavía no venció')
         reserva.estado = EstadoReserva.EXPIRADA
 
 

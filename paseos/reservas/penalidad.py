@@ -13,11 +13,15 @@ class Penalidad(Base):
     En el MVP solo se registra (no se cobra).
     """
 
-    __tablename__ = "penalidades"
+    __tablename__ = 'penalidades'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    reserva_id: Mapped[int] = mapped_column(ForeignKey("reserva.id"), nullable=False)
-    usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), nullable=False)
+    reserva_id: Mapped[int] = mapped_column(
+        ForeignKey('reserva.id'), nullable=False
+    )
+    usuario_id: Mapped[int] = mapped_column(
+        ForeignKey('usuarios.id'), nullable=False
+    )
     motivo: Mapped[MotivoPenalidad]
     monto: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     creada_en: Mapped[datetime]

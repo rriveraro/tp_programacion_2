@@ -13,11 +13,15 @@ from paseos.reservas.enums import AccionEvento
 class EventoReserva(Base):
     """Registra cada transición de estado de una reserva y quién la ejecutó."""
 
-    __tablename__ = "eventos_reserva"
+    __tablename__ = 'eventos_reserva'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    reserva_id: Mapped[int] = mapped_column(ForeignKey("reserva.id"), nullable=False)
-    usuario_id: Mapped[int | None] = mapped_column(ForeignKey("usuarios.id"), nullable=True)
+    reserva_id: Mapped[int] = mapped_column(
+        ForeignKey('reserva.id'), nullable=False
+    )
+    usuario_id: Mapped[int | None] = mapped_column(
+        ForeignKey('usuarios.id'), nullable=True
+    )
     accion: Mapped[AccionEvento]
     creado_en: Mapped[datetime]
 

@@ -1,5 +1,4 @@
-"""Funciones de seguridad: contraseñas y tokens JWT.
-"""
+"""Funciones de seguridad: contraseñas y tokens JWT."""
 
 from datetime import datetime, timedelta, timezone
 

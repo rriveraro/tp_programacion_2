@@ -12,7 +12,7 @@ from paseos.mascotas.enums import Tamaño
 class Mascota(Base):
     """Representa una mascota que puede ser paseada."""
 
-    __tablename__ = "mascotas"
+    __tablename__ = 'mascotas'
 
     id: Mapped[int] = mapped_column(primary_key=True)
     dueno_id: Mapped[int] = mapped_column(ForeignKey('usuarios.id'))
@@ -23,8 +23,7 @@ class Mascota(Base):
     fecha_antirrabica: Mapped[date | None] = mapped_column(nullable=True)
 
     def edad(self, hoy: date) -> int:
-        """Edad en años cumplidos a la fecha `hoy`
-        """
+        """Edad en años cumplidos a la fecha `hoy`"""
         cumplio_este_year = (hoy.month, hoy.day) >= (
             self.fecha_nacimiento.month,
             self.fecha_nacimiento.day,
@@ -36,8 +35,11 @@ class Mascota(Base):
         )
 
     def tiene_antirrabica_vigente(self, fecha_turno: date) -> bool:
-        '''indica si la vacuna antirrábica está vigente a la fecha del turno'''
-        if self.fecha_antirrabica is None or fecha_turno < self.fecha_antirrabica:
+        """indica si la vacuna antirrábica está vigente a la fecha del turno"""
+        if (
+            self.fecha_antirrabica is None
+            or fecha_turno < self.fecha_antirrabica
+        ):
             return False
 
         try:

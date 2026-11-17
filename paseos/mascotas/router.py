@@ -14,8 +14,8 @@ from paseos.reservas.repository import ReservaRepository
 from paseos.usuarios.models import Usuario
 
 router = APIRouter(
-    prefix="/mascotas",
-    tags=["Mascotas"],
+    prefix='/mascotas',
+    tags=['Mascotas'],
 )
 
 
@@ -27,10 +27,10 @@ def get_mascota_service(db: Session = Depends(get_db)) -> MascotaService:
 
 
 @router.post(
-    "",
+    '',
     response_model=MascotaPublica,
     status_code=status.HTTP_201_CREATED,
-    summary="Registrar una nueva mascota",
+    summary='Registrar una nueva mascota',
 )
 def crear_mascota(
     datos: MascotaCrear,
@@ -41,10 +41,10 @@ def crear_mascota(
 
 
 @router.get(
-    "",
+    '',
     response_model=list[MascotaPublica],
     status_code=status.HTTP_200_OK,
-    summary="Listar las mascotas del dueño autenticado",
+    summary='Listar las mascotas del dueño autenticado',
 )
 def listar_mis_mascotas(
     usuario: Usuario = Depends(get_usuario_actual),
@@ -54,10 +54,10 @@ def listar_mis_mascotas(
 
 
 @router.get(
-    "/{id}",
+    '/{id}',
     response_model=MascotaPublica,
     status_code=status.HTTP_200_OK,
-    summary="Obtener detalle de una mascota",
+    summary='Obtener detalle de una mascota',
 )
 def obtener_mascota(
     id: int,
@@ -68,10 +68,10 @@ def obtener_mascota(
 
 
 @router.patch(
-    "/{id}",
+    '/{id}',
     response_model=MascotaPublica,
     status_code=status.HTTP_200_OK,
-    summary="Actualizar datos o vacuna antirrábica de una mascota",
+    summary='Actualizar datos o vacuna antirrábica de una mascota',
 )
 def actualizar_mascota(
     id: int,
@@ -79,13 +79,15 @@ def actualizar_mascota(
     usuario: Usuario = Depends(get_usuario_actual),
     service: MascotaService = Depends(get_mascota_service),
 ):
-    return service.actualizar_mascota(mascota_id=id, dueno=usuario, datos=datos)
+    return service.actualizar_mascota(
+        mascota_id=id, dueno=usuario, datos=datos
+    )
 
 
 @router.delete(
-    "/{id}",
+    '/{id}',
     status_code=status.HTTP_204_NO_CONTENT,
-    summary="Eliminar una mascota",
+    summary='Eliminar una mascota',
 )
 def eliminar_mascota(
     id: int,

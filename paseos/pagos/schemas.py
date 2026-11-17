@@ -20,7 +20,7 @@ class CrearPago(BaseModel):
         default=None,
         pattern=r'^\d{12,19}$',
         repr=False,
-        description='Solo para pagos con tarjeta.'
+        description='Solo para pagos con tarjeta.',
     )
 
 

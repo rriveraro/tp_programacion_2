@@ -25,17 +25,14 @@ def get_pago_service(db: Session = Depends(get_db)) -> PagoService:
 
 
 @router.post(
-    '',
-    response_model=PagoPublico,
-    status_code=status.HTTP_201_CREATED
-    )
+    '', response_model=PagoPublico, status_code=status.HTTP_201_CREATED
+)
 def pagar(
     datos: CrearPago,
     usuario: Usuario = Depends(get_usuario_actual),
-    service: PagoService = Depends(get_pago_service)
-    ):
-    """El dueño paga una reserva finalizada.
-    """
+    service: PagoService = Depends(get_pago_service),
+):
+    """El dueño paga una reserva finalizada."""
     return service.crear_pago(usuario, datos, ahora=datetime.now())
 
 
@@ -43,8 +40,8 @@ def pagar(
 def ver_pago(
     pago_id: int,
     usuario: Usuario = Depends(get_usuario_actual),
-    service: PagoService = Depends(get_pago_service)
-    ):
+    service: PagoService = Depends(get_pago_service),
+):
     return service.obtener_pago(usuario, pago_id)
 
 
@@ -53,6 +50,6 @@ def confirmar(
     pago_id: int,
     datos: ConfirmarPago,
     usuario: Usuario = Depends(get_usuario_actual),
-    service: PagoService = Depends(get_pago_service)
+    service: PagoService = Depends(get_pago_service),
 ):
     return service.confirmar_pago(usuario, pago_id, datos.aprobar)

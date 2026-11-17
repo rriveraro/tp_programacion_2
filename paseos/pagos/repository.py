@@ -21,7 +21,7 @@ class RepositoryPago:
         return self.db.scalar(
             select(Pago).where(
                 Pago.reserva_id == reserva_id,
-                Pago.estado != EstadoPago.RECHAZADO
+                Pago.estado != EstadoPago.RECHAZADO,
             )
         )
 

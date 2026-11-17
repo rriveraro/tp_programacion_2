@@ -19,8 +19,8 @@ from paseos.usuarios.enums import Barrio, Rol
 from paseos.usuarios.models import Usuario
 
 router = APIRouter(
-    prefix="/reservas",
-    tags=["Reservas"],
+    prefix='/reservas',
+    tags=['Reservas'],
 )
 
 
@@ -33,10 +33,10 @@ def get_reserva_service(db: Session = Depends(get_db)) -> ReservaService:
 
 
 @router.post(
-    "",
+    '',
     response_model=ReservaDetalleDueno,
     status_code=status.HTTP_201_CREATED,
-    summary="Crear una nueva reserva de paseo",
+    summary='Crear una nueva reserva de paseo',
 )
 def crear_reserva(
     datos: ReservaCrear,
@@ -49,30 +49,34 @@ def crear_reserva(
 
 
 @router.get(
-    "/pendientes",
+    '/pendientes',
     response_model=list[ReservaPublica],
     status_code=status.HTTP_200_OK,
-    summary="Listar reservas pendientes disponibles",
+    summary='Listar reservas pendientes disponibles',
 )
 def listar_reservas_pendientes(
-    barrio: Barrio | None = Query(default=None, description="Filtrar por barrio"),
+    barrio: Barrio | None = Query(
+        default=None, description='Filtrar por barrio'
+    ),
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
     ahora: datetime = Depends(get_ahora),
 ):
     """Lista las reservas pendientes disponibles para un paseador (sin exponer calle ni número)."""
-    return service.listar_pendientes(paseador=usuario, barrio=barrio, ahora=ahora)
+    return service.listar_pendientes(
+        paseador=usuario, barrio=barrio, ahora=ahora
+    )
 
 
 @router.get(
-    "/mias",
+    '/mias',
     response_model=list[ReservaDetalleDueno | ReservaPublica],
     status_code=status.HTTP_200_OK,
-    summary="Listar reservas del usuario autenticado",
+    summary='Listar reservas del usuario autenticado',
 )
 def listar_mis_reservas(
     solo_activas: bool = Query(
-        default=False, description="Filtrar solo reservas PENDIENTE o ACEPTADA"
+        default=False, description='Filtrar solo reservas PENDIENTE o ACEPTADA'
     ),
     usuario: Usuario = Depends(get_usuario_actual),
     service: ReservaService = Depends(get_reserva_service),
@@ -88,10 +92,10 @@ def listar_mis_reservas(
 
 
 @router.get(
-    "/penalidades/mias",
+    '/penalidades/mias',
     response_model=list[PenalidadSalida],
     status_code=status.HTTP_200_OK,
-    summary="Listar penalidades del usuario autenticado",
+    summary='Listar penalidades del usuario autenticado',
 )
 def listar_mis_penalidades(
     usuario: Usuario = Depends(get_usuario_actual),
@@ -102,10 +106,10 @@ def listar_mis_penalidades(
 
 
 @router.get(
-    "/{reserva_id}/domicilio",
+    '/{reserva_id}/domicilio',
     response_model=ReservaDomicilio,
     status_code=status.HTTP_200_OK,
-    summary="Obtener domicilio completo de una reserva aceptada",
+    summary='Obtener domicilio completo de una reserva aceptada',
 )
 def obtener_domicilio_reserva(
     reserva_id: int,
@@ -114,14 +118,16 @@ def obtener_domicilio_reserva(
     ahora: datetime = Depends(get_ahora),
 ):
     """Devuelve calle, número y barrio al paseador asignado mientras la reserva esté ACEPTADA."""
-    return service.obtener_domicilio(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
+    return service.obtener_domicilio(
+        reserva_id=reserva_id, paseador=usuario, ahora=ahora
+    )
 
 
 @router.post(
-    "/{reserva_id}/aceptar",
+    '/{reserva_id}/aceptar',
     response_model=ReservaPublica,
     status_code=status.HTTP_200_OK,
-    summary="Aceptar una reserva pendiente",
+    summary='Aceptar una reserva pendiente',
 )
 def aceptar_reserva(
     reserva_id: int,
@@ -130,14 +136,16 @@ def aceptar_reserva(
     ahora: datetime = Depends(get_ahora),
 ):
     """Asigna al paseador autenticado una reserva que se encuentra PENDIENTE."""
-    return service.aceptar_reserva(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
+    return service.aceptar_reserva(
+        reserva_id=reserva_id, paseador=usuario, ahora=ahora
+    )
 
 
 @router.post(
-    "/{reserva_id}/cancelar",
+    '/{reserva_id}/cancelar',
     response_model=ReservaDetalleDueno,
     status_code=status.HTTP_200_OK,
-    summary="Cancelar una reserva (dueño)",
+    summary='Cancelar una reserva (dueño)',
 )
 def cancelar_reserva(
     reserva_id: int,
@@ -146,14 +154,16 @@ def cancelar_reserva(
     ahora: datetime = Depends(get_ahora),
 ):
     """Permite al dueño de la mascota cancelar su reserva."""
-    return service.cancelar_por_dueno(reserva_id=reserva_id, dueno=usuario, ahora=ahora)
+    return service.cancelar_por_dueno(
+        reserva_id=reserva_id, dueno=usuario, ahora=ahora
+    )
 
 
 @router.post(
-    "/{reserva_id}/retirar-aceptacion",
+    '/{reserva_id}/retirar-aceptacion',
     response_model=ReservaPublica,
     status_code=status.HTTP_200_OK,
-    summary="Retirar aceptación de una reserva (paseador)",
+    summary='Retirar aceptación de una reserva (paseador)',
 )
 def retirar_aceptacion_reserva(
     reserva_id: int,
@@ -162,14 +172,16 @@ def retirar_aceptacion_reserva(
     ahora: datetime = Depends(get_ahora),
 ):
     """Permite al paseador asignado retirar su aceptación para que la reserva vuelva a PENDIENTE."""
-    return service.cancelar_aceptacion(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
+    return service.cancelar_aceptacion(
+        reserva_id=reserva_id, paseador=usuario, ahora=ahora
+    )
 
 
 @router.post(
-    "/{reserva_id}/finalizar",
+    '/{reserva_id}/finalizar',
     response_model=ReservaPublica,
     status_code=status.HTTP_200_OK,
-    summary="Finalizar una reserva aceptada",
+    summary='Finalizar una reserva aceptada',
 )
 def finalizar_reserva(
     reserva_id: int,
@@ -178,4 +190,6 @@ def finalizar_reserva(
     ahora: datetime = Depends(get_ahora),
 ):
     """Marca el paseo como finalizado al devolver la mascota."""
-    return service.finalizar_reserva(reserva_id=reserva_id, paseador=usuario, ahora=ahora)
+    return service.finalizar_reserva(
+        reserva_id=reserva_id, paseador=usuario, ahora=ahora
+    )

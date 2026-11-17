@@ -1,5 +1,4 @@
-"""Acceso a datos de reservas y su historial de eventos.
-"""
+"""Acceso a datos de reservas y su historial de eventos."""
 
 from datetime import date, time
 
@@ -46,7 +45,9 @@ class ReservaRepository:
         self.db.refresh(reserva)
         return reserva
 
-    def listar_penalidades_por_usuario(self, usuario_id: int) -> list[Penalidad]:
+    def listar_penalidades_por_usuario(
+        self, usuario_id: int
+    ) -> list[Penalidad]:
         """Lista todas las penalidades recibidas por un usuario."""
         stmt = select(Penalidad).where(Penalidad.usuario_id == usuario_id)
         return list(self.db.scalars(stmt).all())
@@ -105,7 +106,9 @@ class ReservaRepository:
         )
         return self.db.scalar(stmt) or 0
 
-    def paseador_cancelo_antes(self, reserva_id: int, paseador_id: int) -> bool:
+    def paseador_cancelo_antes(
+        self, reserva_id: int, paseador_id: int
+    ) -> bool:
         """Indica si el paseador ya retiró su aceptación en esta reserva."""
         stmt = select(
             exists().where(

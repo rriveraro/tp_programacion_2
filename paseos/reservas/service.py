@@ -33,7 +33,9 @@ from paseos.usuarios.models import Usuario
 
 
 class ReservaService:
-    def __init__(self, repo: ReservaRepository, mascota_repo: MascotaRepository):
+    def __init__(
+        self, repo: ReservaRepository, mascota_repo: MascotaRepository
+    ):
         self.repo = repo
         self.mascota_repo = mascota_repo
 
@@ -43,22 +45,25 @@ class ReservaService:
     def _obtener_reserva_o_fallar(self, reserva_id: int) -> Reserva:
         reserva = self.repo.obtener_por_id(reserva_id)
         if reserva is None:
-            raise NoEncontrado(f"No existe la reserva con id {reserva_id}")
+            raise NoEncontrado(f'No existe la reserva con id {reserva_id}')
         return reserva
 
     def _validar_turno_creacion(self, turno: Turno, ahora: datetime) -> None:
         """Valida las reglas de negocio del turno al momento de crear la reserva."""
         if (turno.fecha.year, turno.fecha.month) != (ahora.year, ahora.month):
             raise TurnoInvalidoError(
-                "Solo se pueden crear reservas dentro del mes actual"
+                'Solo se pueden crear reservas dentro del mes actual'
             )
-        if turno.hora_inicio < HORA_MINIMA_PASEO or turno.hora_fin > HORA_MAXIMA_PASEO:
+        if (
+            turno.hora_inicio < HORA_MINIMA_PASEO
+            or turno.hora_fin > HORA_MAXIMA_PASEO
+        ):
             raise TurnoInvalidoError(
-                "El horario del paseo debe estar entre las 08:00 y las 20:00"
+                'El horario del paseo debe estar entre las 08:00 y las 20:00'
             )
         if turno.inicio < ahora + timedelta(hours=HORAS_ANTICIPACION_MINIMA):
             raise TurnoInvalidoError(
-                f"La reserva debe crearse con al menos {HORAS_ANTICIPACION_MINIMA} horas de anticipación"
+                f'La reserva debe crearse con al menos {HORAS_ANTICIPACION_MINIMA} horas de anticipación'
             )
 
     def _expirar_vencidas(self, ahora: datetime) -> None:
@@ -95,15 +100,19 @@ class ReservaService:
         instante = self._ahora(ahora)
 
         if not dueno.activo:
-            raise NoAutorizado("El usuario está dado de baja")
+            raise NoAutorizado('El usuario está dado de baja')
         if dueno.rol != Rol.DUENO:
-            raise NoAutorizado("Solo un usuario con rol DUENO puede crear reservas")
+            raise NoAutorizado(
+                'Solo un usuario con rol DUENO puede crear reservas'
+            )
 
         mascota = self.mascota_repo.obtener_por_id(datos.mascota_id)
         if mascota is None:
-            raise NoEncontrado(f"No existe la mascota con id {datos.mascota_id}")
+            raise NoEncontrado(
+                f'No existe la mascota con id {datos.mascota_id}'
+            )
         if mascota.dueno_id != dueno.id:
-            raise NoAutorizado("La mascota no pertenece al dueño autenticado")
+            raise NoAutorizado('La mascota no pertenece al dueño autenticado')
 
         turno = Turno(
             fecha=datos.fecha,
@@ -114,7 +123,7 @@ class ReservaService:
 
         if not mascota.tiene_antirrabica_vigente(turno.fecha):
             raise VacunaAntirrabicaNoVigenteError(
-                "La mascota no tiene la vacuna antirrábica vigente para la fecha del turno"
+                'La mascota no tiene la vacuna antirrábica vigente para la fecha del turno'
             )
 
         tarifa = calcular_tarifa(mascota.tamaño)
@@ -148,7 +157,7 @@ class ReservaService:
         instante = self._ahora(ahora)
         if paseador.rol != Rol.PASEADOR:
             raise NoAutorizado(
-                "Solo un usuario con rol PASEADOR puede consultar reservas pendientes"
+                'Solo un usuario con rol PASEADOR puede consultar reservas pendientes'
             )
 
         self._expirar_vencidas(instante)
@@ -165,8 +174,12 @@ class ReservaService:
         self._expirar_vencidas(instante)
 
         if usuario.rol == Rol.DUENO:
-            return self.repo.listar_por_dueno(usuario.id, solo_activas=solo_activas)
-        return self.repo.listar_por_paseador(usuario.id, solo_activas=solo_activas)
+            return self.repo.listar_por_dueno(
+                usuario.id, solo_activas=solo_activas
+            )
+        return self.repo.listar_por_paseador(
+            usuario.id, solo_activas=solo_activas
+        )
 
     def obtener_domicilio(
         self,
@@ -174,18 +187,18 @@ class ReservaService:
         paseador: Usuario,
         ahora: datetime | None = None,
     ) -> Reserva:
-        """Devuelve la reserva con domicilio completo al paseador asignado """
+        """Devuelve la reserva con domicilio completo al paseador asignado"""
         instante = self._ahora(ahora)
         self._expirar_vencidas(instante)
 
         reserva = self._obtener_reserva_o_fallar(reserva_id)
         if paseador.rol != Rol.PASEADOR or reserva.paseador_id != paseador.id:
             raise NoAutorizado(
-                "Solo el paseador asignado puede consultar el domicilio de esta reserva"
+                'Solo el paseador asignado puede consultar el domicilio de esta reserva'
             )
         if reserva.estado != EstadoReserva.ACEPTADA:
             raise TransicionInvalidaError(
-                "El domicilio solo está disponible mientras la reserva está ACEPTADA"
+                'El domicilio solo está disponible mientras la reserva está ACEPTADA'
             )
         return reserva
 
@@ -199,7 +212,7 @@ class ReservaService:
         instante = self._ahora(ahora)
         if paseador.rol != Rol.PASEADOR:
             raise NoAutorizado(
-                "Solo un usuario con rol PASEADOR puede aceptar reservas"
+                'Solo un usuario con rol PASEADOR puede aceptar reservas'
             )
 
         self._expirar_vencidas(instante)
@@ -208,13 +221,13 @@ class ReservaService:
         # 1. Validar estado primero (antes de ir a contar turnos o historial)
         if reserva.estado != EstadoReserva.PENDIENTE:
             raise TransicionInvalidaError(
-                f"No se puede aceptar una reserva en estado {reserva.estado.value}"
+                f'No se puede aceptar una reserva en estado {reserva.estado.value}'
             )
 
         # 2. Regla: no volver a aceptar si ya retiró su aceptación antes
         if self.repo.paseador_cancelo_antes(reserva.id, paseador.id):
             raise TransicionInvalidaError(
-                "No podés volver a aceptar una reserva cuya aceptación ya cancelaste"
+                'No podés volver a aceptar una reserva cuya aceptación ya cancelaste'
             )
 
         # 3. Regla: tope de perros simultáneos
@@ -226,7 +239,7 @@ class ReservaService:
         )
         if aceptadas_en_turno >= MAX_PERROS_SIMULTANEOS:
             raise TransicionInvalidaError(
-                f"Ya alcanzaste el máximo de {MAX_PERROS_SIMULTANEOS} mascotas simultáneas en ese turno"
+                f'Ya alcanzaste el máximo de {MAX_PERROS_SIMULTANEOS} mascotas simultáneas en ese turno'
             )
 
         reserva.aceptar(paseador.id, instante)
@@ -251,7 +264,7 @@ class ReservaService:
 
         if dueno.rol != Rol.DUENO or reserva.dueno_id != dueno.id:
             raise NoAutorizado(
-                "Solo el dueño de la mascota puede cancelar esta reserva"
+                'Solo el dueño de la mascota puede cancelar esta reserva'
             )
 
         es_tardia = reserva.es_cancelacion_tardia(instante)
@@ -289,11 +302,13 @@ class ReservaService:
 
         if paseador.rol != Rol.PASEADOR or reserva.paseador_id != paseador.id:
             raise NoAutorizado(
-                "Solo el paseador asignado puede cancelar la aceptación de esta reserva"
+                'Solo el paseador asignado puede cancelar la aceptación de esta reserva'
             )
 
         es_tardia = reserva.es_cancelacion_tardia(instante)
-        paseador_penalizado_id = reserva.paseador_id  # Se guarda antes de limpiar paseador_id
+        paseador_penalizado_id = (
+            reserva.paseador_id
+        )  # Se guarda antes de limpiar paseador_id
 
         reserva.cancelar_aceptacion(instante)
 
@@ -334,7 +349,7 @@ class ReservaService:
 
         if paseador.rol != Rol.PASEADOR or reserva.paseador_id != paseador.id:
             raise NoAutorizado(
-                "Solo el paseador asignado puede finalizar esta reserva"
+                'Solo el paseador asignado puede finalizar esta reserva'
             )
 
         reserva.finalizar(instante)
