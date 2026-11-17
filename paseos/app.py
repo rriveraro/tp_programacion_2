@@ -13,6 +13,7 @@ from paseos.reservas.evento import EventoReserva  # noqa: F401
 from paseos.reservas.penalidad import Penalidad  # noqa: F401
 from paseos.reservas.repository import ReservaRepository
 from paseos.reservas.reservas import Reserva  # noqa: F401
+from paseos.pagos.pago import Pago  # noqa: F401
 from paseos.reservas.router import router as reservas_router
 
 # Importar todos los modelos antes de create_all para registrarlos en Base.metadata
@@ -59,4 +60,4 @@ app.dependency_overrides[get_usuario_service] = (
 
 @app.get('/')
 def read_root():
-    return {'message': 'Hola Mundo!'}
+    return {"api": "Gestión de Paseos Caninos", "estado": "activa"}
