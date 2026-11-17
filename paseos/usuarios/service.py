@@ -23,9 +23,10 @@ VerificadorReservas = Callable[[Usuario], bool]
 
 
 def _sin_reservas(_: Usuario) -> bool:
-    # TODO(reservas): reemplazar por la consulta real cuando exista el módulo
-    # reservas. Para un dueño cuentan las reservas de sus mascotas; para un
-    # paseador, las que aceptó.
+    # Valor por defecto, para usar el servicio sin el módulo reservas (por
+    # ejemplo, en auth o en tests). La consulta real se conecta en app.py:
+    # para un dueño cuentan las reservas de sus mascotas; para un paseador,
+    # las que aceptó.
     return False
 
 
@@ -83,8 +84,10 @@ class UsuarioService:
         for campo, valor in datos.items():
             setattr(usuario, campo, valor)
         return self.repo.guardar(usuario)
-    
-    def actualizar_password(self, usuario: Usuario, password_hash: str) -> None:
+
+    def actualizar_password(
+        self, usuario: Usuario, password_hash: str
+    ) -> None:
         """Guarda una contraseña hasheada (hashear lo hace auth)"""
         usuario.password_hash = password_hash
         self.repo.guardar(usuario)
