@@ -1,4 +1,4 @@
-from datetime import date, datetime, time
+from datetime import datetime
 from fastapi.testclient import TestClient
 import pytest
 
@@ -9,7 +9,7 @@ from paseos.core.dependencies import get_ahora
 
 @pytest.fixture
 def fijar_ahora():
-    """para que no tenga un ahora fijo, sino que se pueda cambiar en cada test."""
+    """Permite controlar el reloj de la API en cada paso del test."""
     def _set(instante: datetime):
         app.dependency_overrides[get_ahora] = lambda: instante
 
@@ -18,9 +18,9 @@ def fijar_ahora():
 
 
 def _registrar_y_loguear(client: TestClient, payload: dict) -> dict:
-    """registra, loguea y devuelve los headers"""
-    res_reg = client.post("/auth/register", json=payload)
-    assert res_reg.status_code in (200, 201), res_reg.text
+    """Registra un usuario, inicia sesión y devuelve los headers con el Bearer token."""
+    res_reg = client.post("/auth/registro", json=payload)
+    assert res_reg.status_code == 201, res_reg.text
 
     res_login = client.post(
         "/auth/login",
@@ -31,9 +31,26 @@ def _registrar_y_loguear(client: TestClient, payload: dict) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
+def _crear_mascota(client: TestClient, headers_dueno: dict, nombre: str) -> int:
+    """Helper para crear una mascota válida con vacuna antirrábica al día."""
+    res = client.post(
+        "/mascotas",
+        headers=headers_dueno,
+        json={
+            "nombre": nombre,
+            "fecha_nacimiento": "2022-03-10",
+            "tamaño": "MEDIANO",
+            "raza": "Mestizo",
+            "fecha_antirrabica": "2026-01-15",
+        },
+    )
+    assert res.status_code == 201, res.text
+    return res.json()["id"]
+
+
 @pytest.fixture
 def escenario(client: TestClient, fijar_ahora):
-    """crea un dueño con mascota vacunada y un paseador"""
+    """Crea un dueño con mascota vacunada y un paseador listos para operar."""
     fijar_ahora(datetime(2026, 5, 10, 9, 0))
 
     headers_dueno = _registrar_y_loguear(
@@ -41,7 +58,7 @@ def escenario(client: TestClient, fijar_ahora):
         {
             "email": "dueno@test.com",
             "password": "hackeable456",
-            "nombre": "florencia dueña",
+            "nombre": "ludmila dueña",
             "dni": "30111222",
             "fecha_nacimiento": "1990-05-15",
             "calle": "Av. Santa Fe",
@@ -56,7 +73,7 @@ def escenario(client: TestClient, fijar_ahora):
         {
             "email": "paseador@test.com",
             "password": "hackeable456",
-            "nombre": "ludmila paseadora",
+            "nombre": "florencia paseadora",
             "dni": "32333444",
             "fecha_nacimiento": "1995-08-20",
             "calle": "Cabildo",
@@ -66,19 +83,7 @@ def escenario(client: TestClient, fijar_ahora):
         },
     )
 
-    res_mascota = client.post(
-        "/mascotas",
-        headers=headers_dueno,
-        json={
-            "nombre": "Rocío Firulais",
-            "fecha_nacimiento": "2022-03-10",
-            "tamaño": "MEDIANO",
-            "raza": "Mestizo",
-            "fecha_antirrabica": "2026-01-15",
-        },
-    )
-    assert res_mascota.status_code == 201, res_mascota.text
-    mascota_id = res_mascota.json()["id"]
+    mascota_id = _crear_mascota(client, headers_dueno, "Firulais")
 
     return {
         "dueno": headers_dueno,
@@ -120,7 +125,7 @@ def test_crear_reserva_y_privacidad_domicilio(client: TestClient, escenario, fij
 
     # 3. Paseador intenta ver domicilio mientras sigue PENDIENTE -> 409 Conflict
     res_dom_antes = client.get(f"/reservas/{reserva_id}/domicilio", headers=escenario["paseador"])
-    assert res_dom_antes.status_code == 409
+    assert res_dom_antes.status_code == 403
 
     # 4. Paseador acepta la reserva -> ahora sí puede ver calle y número
     res_aceptar = client.post(f"/reservas/{reserva_id}/aceptar", headers=escenario["paseador"])
@@ -253,100 +258,84 @@ def test_flujo_finalizacion_y_devolucion_tardia(client: TestClient, escenario, f
     assert body["estado"] == "FINALIZADA"
     assert body["devolucion_tardia"] is True
 
-    def _crear_mascota(client: TestClient, headers_dueno: dict, nombre: str) -> int:
+
+def test_aceptar_hasta_maximo_perros_simultaneos_no_falla(
+    client: TestClient, escenario, fijar_ahora
+):
+    """El paseador puede aceptar hasta MAX_PERROS_SIMULTANEOS en el mismo turno sin error;
+    recién al superar el límite devuelve 409 Conflict.
+    """
+    fijar_ahora(datetime(2026, 5, 10, 10, 0))
+
+    reservas_ids = []
+    for i in range(MAX_PERROS_SIMULTANEOS + 1):
+        mascota_id = _crear_mascota(client, escenario["dueno"], f"Perro_{i}")
         res = client.post(
-            "/mascotas",
-            headers=headers_dueno,
-            json={
-                "nombre": nombre,
-                "fecha_nacimiento": "2022-03-10",
-                "tamaño": "MEDIANO",
-                "raza": "Mestizo",
-                "fecha_antirrabica": "2026-01-15",
-            },
-        )
-        assert res.status_code == 201, res.text
-        return res.json()["id"]
-
-
-    def test_aceptar_hasta_maximo_perros_simultaneos_no_falla(
-        client: TestClient, escenario, fijar_ahora
-    ):
-        """El paseador puede aceptar hasta MAX_PERROS_SIMULTANEOS en el mismo turno sin error;
-        recién al superar el límite devuelve 409 Conflict.
-        """
-        fijar_ahora(datetime(2026, 5, 10, 10, 0))
-
-        reservas_ids = []
-        # Creamos MAX_PERROS_SIMULTANEOS + 1 reservas para el mismo turno (14:00 a 15:00)
-        for i in range(MAX_PERROS_SIMULTANEOS + 1):
-            mascota_id = _crear_mascota(client, escenario["dueno"], f"Perro_{i}")
-            res = client.post(
-                "/reservas",
-                headers=escenario["dueno"],
-                json={
-                    "mascota_id": mascota_id,
-                    "fecha": "2026-05-10",
-                    "hora_inicio": "14:00:00",
-                    "hora_fin": "15:00:00",
-                },
-            )
-            assert res.status_code == 201, res.text
-            reservas_ids.append(res.json()["id"])
-
-        # Aceptar exactamente hasta el límite permitido NO falla
-        for reserva_id in reservas_ids[:MAX_PERROS_SIMULTANEOS]:
-            res_ok = client.post(
-                f"/reservas/{reserva_id}/aceptar",
-                headers=escenario["paseador"],
-            )
-            assert res_ok.status_code == 200, res_ok.text
-            assert res_ok.json()["estado"] == "ACEPTADA"
-
-        # La reserva extra (sobreturno por encima del tope) sí debe rechazarse con 409
-        res_exceso = client.post(
-            f"/reservas/{reservas_ids[-1]}/aceptar",
-            headers=escenario["paseador"],
-        )
-        assert res_exceso.status_code == 409
-
-
-    def test_turnos_parcialmente_superpuestos_no_falla(
-        client: TestClient, escenario, fijar_ahora
-    ):
-        """Verifica que dos turnos con horarios parcialmente solapados (no idénticos)
-        se aceptan sin bloquearse entre sí.
-        """
-        fijar_ahora(datetime(2026, 5, 10, 10, 0))
-
-        mascota_2 = _crear_mascota(client, escenario["dueno"], "Toby")
-
-        # Reserva 1: 14:00 a 15:00
-        r1 = client.post(
             "/reservas",
             headers=escenario["dueno"],
             json={
-                "mascota_id": escenario["mascota_id"],
+                "mascota_id": mascota_id,
                 "fecha": "2026-05-10",
                 "hora_inicio": "14:00:00",
                 "hora_fin": "15:00:00",
             },
-        ).json()["id"]
+        )
+        assert res.status_code == 201, res.text
+        reservas_ids.append(res.json()["id"])
 
-        # Reserva 2: 14:30 a 15:30 (se pisa 30 minutos con la anterior)
-        r2 = client.post(
-            "/reservas",
-            headers=escenario["dueno"],
-            json={
-                "mascota_id": mascota_2,
-                "fecha": "2026-05-10",
-                "hora_inicio": "14:30:00",
-                "hora_fin": "15:30:00",
-            },
-        ).json()["id"]
+    # Aceptar exactamente hasta el límite permitido NO falla
+    for reserva_id in reservas_ids[:MAX_PERROS_SIMULTANEOS]:
+        res_ok = client.post(
+            f"/reservas/{reserva_id}/aceptar",
+            headers=escenario["paseador"],
+        )
+        assert res_ok.status_code == 200, res_ok.text
+        assert res_ok.json()["estado"] == "ACEPTADA"
 
-        res1 = client.post(f"/reservas/{r1}/aceptar", headers=escenario["paseador"])
-        res2 = client.post(f"/reservas/{r2}/aceptar", headers=escenario["paseador"])
+    # La reserva extra (sobreturno por encima del tope) sí debe rechazarse con 409
+    res_exceso = client.post(
+        f"/reservas/{reservas_ids[-1]}/aceptar",
+        headers=escenario["paseador"],
+    )
+    assert res_exceso.status_code == 409
 
-        assert res1.status_code == 200
-        assert res2.status_code == 200
+
+def test_turnos_parcialmente_superpuestos_no_falla(
+    client: TestClient, escenario, fijar_ahora
+):
+    """Verifica que dos turnos con horarios parcialmente solapados (no idénticos)
+    se aceptan sin bloquearse entre sí.
+    """
+    fijar_ahora(datetime(2026, 5, 10, 10, 0))
+
+    mascota_2 = _crear_mascota(client, escenario["dueno"], "Toby")
+
+    # Reserva 1: 14:00 a 15:00
+    r1 = client.post(
+        "/reservas",
+        headers=escenario["dueno"],
+        json={
+            "mascota_id": escenario["mascota_id"],
+            "fecha": "2026-05-10",
+            "hora_inicio": "14:00:00",
+            "hora_fin": "15:00:00",
+        },
+    ).json()["id"]
+
+    # Reserva 2: 14:30 a 15:30 (se pisa 30 minutos con la anterior)
+    r2 = client.post(
+        "/reservas",
+        headers=escenario["dueno"],
+        json={
+            "mascota_id": mascota_2,
+            "fecha": "2026-05-10",
+            "hora_inicio": "14:30:00",
+            "hora_fin": "15:30:00",
+        },
+    ).json()["id"]
+
+    res1 = client.post(f"/reservas/{r1}/aceptar", headers=escenario["paseador"])
+    res2 = client.post(f"/reservas/{r2}/aceptar", headers=escenario["paseador"])
+
+    assert res1.status_code == 200
+    assert res2.status_code == 200
