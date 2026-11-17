@@ -44,7 +44,10 @@ app.include_router(pagos_router)
 def _get_usuario_service_con_reservas(db: Session = Depends(get_db)) -> UsuarioService:
     return UsuarioService(
         repo=UsuarioRepository(db),
-        tiene_reservas_activas=ReservaRepository(db).tiene_reservas_activas_usuario,
+        # El servicio pasa el Usuario; el repositorio de reservas espera el id.
+        tiene_reservas_activas=lambda usuario: ReservaRepository(
+            db
+        ).tiene_reservas_activas_usuario(usuario.id),
     )
 
 
