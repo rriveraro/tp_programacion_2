@@ -60,4 +60,4 @@ app.dependency_overrides[get_usuario_service] = (
 
 @app.get('/')
 def read_root():
-    return {"api": "Gestión de Paseos Caninos", "estado": "activa"}
+    return {'message': 'Hola Mundo!'}
