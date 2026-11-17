@@ -1,0 +1,15 @@
+# Lo que no se copia a la imagen.
+.git
+.github
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.coverage
+htmlcov
+.env
+*.db
+tests
+docs
