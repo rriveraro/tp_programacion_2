@@ -96,15 +96,17 @@ class ReservaRepository:
         hora_inicio: time,
         hora_fin: time,
     ) -> int:
-        """Cuenta cuántas reservas ACEPTADAS tiene un paseador en un turno exacto."""
+        """Cuenta cuántas reservas ACEPTADAS tiene el paseador cuyo horario
+        se superpone (total o parcialmente) con [hora_inicio, hora_fin).
+        """
         stmt = select(func.count(Reserva.id)).where(
             Reserva.paseador_id == paseador_id,
             Reserva.estado == EstadoReserva.ACEPTADA,
             Reserva.fecha == fecha,
-            Reserva.hora_inicio == hora_inicio,
-            Reserva.hora_fin == hora_fin,
+            Reserva.hora_inicio < hora_fin,
+            Reserva.hora_fin > hora_inicio,
         )
-        return self.db.scalar(stmt) or 0
+        return int(self.db.scalar(stmt) or 0)
 
     def paseador_cancelo_antes(
         self, reserva_id: int, paseador_id: int
