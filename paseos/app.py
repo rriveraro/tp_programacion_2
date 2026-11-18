@@ -1,6 +1,9 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import Depends, FastAPI
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from paseos.auth.router import router as auth_router
@@ -61,3 +64,19 @@ app.dependency_overrides[get_usuario_service] = (
 @app.get('/')
 def read_root():
     return {'message': 'Hola Mundo!'}
+
+
+# Frontend: HTML, CSS y JS estáticos servidos por la misma API, así el
+# navegador no necesita CORS (mismo origen). Queda en /app/.
+@app.get('/app', include_in_schema=False)
+def ir_al_front():
+    return RedirectResponse('/app/')
+
+
+app.mount(
+    '/app',
+    StaticFiles(
+        directory=Path(__file__).parent.parent / 'frontend', html=True
+    ),
+    name='frontend',
+)

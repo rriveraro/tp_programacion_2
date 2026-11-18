@@ -58,6 +58,10 @@ class PagoService:
             raise NoAutorizado('No tiene permiso para ver este pago')
         return pago
 
+    def listar_mis_pagos(self, usuario: Usuario) -> list[Pago]:
+        """Pagos donde el usuario es el dueño o el paseador de la reserva."""
+        return self.repo.listar_de_usuario(usuario.id)
+
     def _obtener(self, pago_id: int) -> Pago:
         pago = self.repo.get_pago_por_id(pago_id)
         if pago is None:

@@ -38,6 +38,15 @@ def pagar(
     return service.crear_pago(usuario, datos, ahora=ahora)
 
 
+@router.get('/mios', response_model=list[PagoPublico])
+def mis_pagos(
+    usuario: Usuario = Depends(get_usuario_actual),
+    service: PagoService = Depends(get_pago_service),
+):
+    """Pagos donde el usuario es el dueño o el paseador de la reserva."""
+    return service.listar_mis_pagos(usuario)
+
+
 @router.get('/{pago_id}', response_model=PagoPublico)
 def ver_pago(
     pago_id: int,

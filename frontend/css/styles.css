@@ -1,0 +1,265 @@
+/* Yendog — estilos.
+   Paleta inspirada en una plaza porteña: verde de árboles, vereda clara
+   y el amarillo de la chapita del collar como único acento. */
+
+:root {
+  --plaza: #1e4636;        /* verde oscuro: marca, botones principales */
+  --plaza-suave: #e2ece5;  /* fondos de elementos activos */
+  --chapita: #f2b53a;      /* acento: estados y detalles */
+  --vereda: #eef1ec;       /* fondo general */
+  --papel: #ffffff;        /* superficies */
+  --tinta: #18221c;        /* texto */
+  --gris: #5b6a61;         /* texto secundario */
+  --linea: #d3dcd5;        /* bordes */
+  --alerta: #b42318;       /* errores y acciones destructivas */
+  --alerta-suave: #fbe9e7;
+  --ok: #2e7d4f;
+
+  --radio: 14px;
+  --fuente-titulos: 'Bricolage Grotesque', system-ui, sans-serif;
+  --fuente-texto: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--vereda);
+  color: var(--tinta);
+  font-family: var(--fuente-texto);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-family: var(--fuente-titulos);
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0 0 0.75rem; }
+
+a { color: var(--plaza); }
+
+:focus-visible { outline: 3px solid var(--chapita); outline-offset: 2px; }
+
+/* ---------- Estructura de la app ---------- */
+
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--plaza);
+  color: #fff;
+}
+.marca {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.marca .punto {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--chapita);
+  box-shadow: 0 0 0 3px rgba(242, 181, 58, 0.35);
+}
+.usuario { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; }
+.usuario .rol { opacity: 0.8; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+.menu { display: flex; flex-direction: column; gap: 0.25rem; }
+.menu a {
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  color: var(--tinta);
+  text-decoration: none;
+  font-weight: 700;
+}
+.menu a:hover { background: var(--plaza-suave); }
+.menu a[aria-current='page'] { background: var(--plaza); color: #fff; }
+
+main { min-width: 0; }
+.encabezado { margin-bottom: 1.25rem; }
+.encabezado p { color: var(--gris); max-width: 60ch; }
+
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; padding-bottom: 6rem; gap: 1rem; }
+  .menu {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    flex-direction: row; justify-content: space-around;
+    background: var(--papel); border-top: 1px solid var(--linea);
+    padding: 0.4rem;
+  }
+  .menu a { padding: 0.5rem; font-size: 0.8rem; text-align: center; flex: 1; }
+  .usuario .nombre { display: none; }
+  h1 { font-size: 1.6rem; }
+}
+
+/* ---------- Bloques ---------- */
+
+.panel {
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.lista { display: grid; gap: 0.75rem; }
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 1rem 1.1rem;
+}
+.item .titulo { font-family: var(--fuente-titulos); font-weight: 700; font-size: 1.1rem; }
+.item .detalle { color: var(--gris); font-size: 0.95rem; }
+.item > .monto { grid-column: 3; grid-row: 1; align-self: start; }
+.item .acciones { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.item .acciones:not(:has(button)) { display: none; }
+@media (max-width: 760px) {
+  .item { grid-template-columns: auto 1fr; }
+  .item > .monto { grid-column: 2; grid-row: auto; }
+  .item .acciones { grid-column: 1 / -1; }
+}
+
+.vacio {
+  border: 2px dashed var(--linea);
+  border-radius: var(--radio);
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--gris);
+}
+
+/* La chapita: el estado como la medalla del collar. */
+.chapita {
+  --color: var(--gris);
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--papel);
+  border: 4px solid var(--color);
+  color: var(--color);
+  font-family: var(--fuente-titulos);
+  font-weight: 800; font-size: 0.7rem; text-align: center; line-height: 1;
+  position: relative;
+}
+.chapita::before {  /* la argolla */
+  content: ''; position: absolute; top: -9px; left: 50%;
+  width: 10px; height: 10px; margin-left: -5px;
+  border: 3px solid var(--color); border-radius: 50%; background: var(--vereda);
+}
+.chapita.pendiente { --color: var(--chapita); color: #8a5d00; }
+.chapita.aceptada, .chapita.aprobado { --color: var(--ok); }
+.chapita.finalizada { --color: var(--plaza); }
+.chapita.cancelada, .chapita.rechazado { --color: var(--alerta); }
+.chapita.expirada { --color: var(--gris); }
+
+.monto { font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.15rem; white-space: nowrap; }
+.etiqueta { color: var(--gris); font-size: 0.85rem; }
+
+/* ---------- Formularios ---------- */
+
+form { display: grid; gap: 0.9rem; }
+.fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.9rem; align-items: end; }
+label { display: grid; gap: 0.3rem; font-weight: 700; font-size: 0.95rem; }
+label .ayuda { font-weight: 400; color: var(--gris); font-size: 0.85rem; }
+input, select {
+  font: inherit;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--linea);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--tinta);
+  min-width: 0;
+}
+input:focus, select:focus { border-color: var(--plaza); }
+
+fieldset { border: 0; padding: 0; margin: 0; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+fieldset legend { font-weight: 700; margin-bottom: 0.3rem; font-size: 0.95rem; }
+.opcion { display: flex; align-items: center; gap: 0.4rem; font-weight: 400; padding: 0.5rem 0.8rem;
+  border: 1px solid var(--linea); border-radius: 10px; background: #fff; cursor: pointer; }
+.opcion:has(input:checked) { border-color: var(--plaza); background: var(--plaza-suave); font-weight: 700; }
+
+button, .boton {
+  font: inherit; font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--plaza);
+  background: var(--plaza);
+  color: #fff;
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.1); }
+button:disabled { opacity: 0.6; cursor: wait; }
+button.secundario { background: #fff; color: var(--plaza); }
+button.peligro { background: #fff; color: var(--alerta); border-color: var(--alerta); }
+button.chico { padding: 0.4rem 0.75rem; font-size: 0.9rem; }
+.barra button { background: transparent; border-color: rgba(255,255,255,0.5); }
+
+.error-form {
+  background: var(--alerta-suave); color: var(--alerta);
+  border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.95rem;
+}
+.error-form:empty { display: none; }
+
+/* ---------- Ingreso ---------- */
+
+.ingreso {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+.ingreso .cartel {
+  background: var(--plaza);
+  color: #fff;
+  padding: 3rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.ingreso .cartel h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 0.95; max-width: 10ch; }
+.ingreso .cartel p { opacity: 0.85; max-width: 40ch; font-size: 1.1rem; }
+.ingreso .formulario { padding: 3rem; display: flex; flex-direction: column; justify-content: center; max-width: 560px; }
+.cambiar { margin-top: 1rem; color: var(--gris); }
+.cambiar button { background: none; border: 0; color: var(--plaza); padding: 0; text-decoration: underline; }
+@media (max-width: 860px) {
+  .ingreso { grid-template-columns: 1fr; }
+  .ingreso .cartel { padding: 2rem 1.25rem; gap: 1rem; }
+  .ingreso .formulario { padding: 1.5rem 1.25rem 3rem; }
+}
+
+/* ---------- Avisos ---------- */
+
+#avisos { position: fixed; bottom: 1rem; right: 1rem; display: grid; gap: 0.5rem; z-index: 50; }
+.aviso {
+  background: var(--tinta); color: #fff;
+  padding: 0.75rem 1rem; border-radius: 10px;
+  max-width: 360px; box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+  animation: entra 0.2s ease-out;
+}
+.aviso.error { background: var(--alerta); }
+@keyframes entra { from { opacity: 0; transform: translateY(6px); } }
+@media (max-width: 760px) { #avisos { bottom: 5rem; left: 1rem; } }
+@media (prefers-reduced-motion: reduce) { .aviso { animation: none; } }
+
+.oculto { display: none !important; }

@@ -207,3 +207,20 @@ def test_un_tercero_no_ve_el_pago(client, otro, pago_id):
 def test_ver_un_pago_inexistente(client, dueno):
     respuesta = client.get('/pagos/999', headers=headers_de(dueno))
     assert respuesta.status_code == HTTPStatus.NOT_FOUND
+
+
+# --- GET /pagos/mios ----------------------------------------------------
+
+
+@pytest.mark.parametrize('quien', ['dueno', 'paseador'])
+def test_mis_pagos_lo_ven_dueno_y_paseador(client, request, pago_id, quien):
+    usuario = request.getfixturevalue(quien)
+    respuesta = client.get('/pagos/mios', headers=headers_de(usuario))
+    assert respuesta.status_code == HTTPStatus.OK
+    assert [p['id'] for p in respuesta.json()] == [pago_id]
+
+
+def test_mis_pagos_de_un_tercero_esta_vacio(client, otro, pago_id):
+    respuesta = client.get('/pagos/mios', headers=headers_de(otro))
+    assert respuesta.status_code == HTTPStatus.OK
+    assert respuesta.json() == []
