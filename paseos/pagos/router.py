@@ -10,12 +10,13 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from paseos.core.database import get_db
-from paseos.core.dependencies import get_usuario_actual
+from paseos.core.dependencies import get_usuario_actual, get_ahora
 from paseos.pagos.repository import RepositoryPago
 from paseos.pagos.schemas import ConfirmarPago, CrearPago, PagoPublico
 from paseos.pagos.service import PagoService
 from paseos.reservas.repository import ReservaRepository
 from paseos.usuarios.models import Usuario
+
 
 router = APIRouter(prefix='/pagos', tags=['pagos'])
 
@@ -33,7 +34,7 @@ def pagar(
     service: PagoService = Depends(get_pago_service),
 ):
     """El dueño paga una reserva finalizada."""
-    return service.crear_pago(usuario, datos, ahora=datetime.now())
+    return service.crear_pago(usuario, datos, ahora= Depends(get_ahora))
 
 
 @router.get('/{pago_id}', response_model=PagoPublico)
