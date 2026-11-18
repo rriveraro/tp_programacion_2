@@ -7,11 +7,12 @@ import {
 } from '../ui.js';
 
 export async function vistaPerfil(contenedor, { usuario, actualizarUsuario, salir }) {
+  const esDueno = usuario.rol === 'DUENO';
   contenedor.innerHTML = `
     <div class="encabezado">
       <h1>Mi perfil</h1>
-      <p>Tu domicilio solo lo ve el paseador cuando acepta un paseo.
-         Las reservas ya creadas guardan el domicilio que tenían.</p>
+      ${esDueno ? `<p>Tu domicilio solo lo ve el paseador cuando acepta un paseo.
+         Las reservas ya creadas guardan el domicilio que tenían.</p>` : ''}
     </div>
 
     <section class="panel">
@@ -50,7 +51,9 @@ export async function vistaPerfil(contenedor, { usuario, actualizarUsuario, sali
 
     <section class="panel">
       <h2>Darte de baja</h2>
-      <p>No vas a poder volver a ingresar. Si tenés reservas pendientes o aceptadas, primero cancelalas.</p>
+      <p>No vas a poder volver a ingresar. ${esDueno
+        ? 'Si tenés reservas pendientes o aceptadas, primero cancelalas.'
+        : 'Si tenés paseos aceptados, primero retirá tu aceptación.'}</p>
       <p class="error-form" role="alert" id="error-baja"></p>
       <button class="peligro" id="baja">Darme de baja</button>
     </section>`;
@@ -85,4 +88,3 @@ export async function vistaPerfil(contenedor, { usuario, actualizarUsuario, sali
     }
   });
 }
-
