@@ -32,7 +32,7 @@ def pagar(
     datos: CrearPago,
     usuario: Usuario = Depends(get_usuario_actual),
     service: PagoService = Depends(get_pago_service),
-    ahora = Depends(get_ahora)
+    ahora: datetime = Depends(get_ahora)
 ):
     """El dueño paga una reserva finalizada."""
     return service.crear_pago(usuario, datos, ahora=ahora)
