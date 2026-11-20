@@ -51,6 +51,20 @@ def test_finalizar_a_tiempo():
     assert reserva.devolucion_tardia is False
 
 
+def test_no_se_puede_finalizar_antes_del_inicio():
+    reserva = reserva_en(EstadoReserva.ACEPTADA, paseador_id=7)
+    with pytest.raises(TransicionInvalidaError):
+        reserva.finalizar(datetime(2026, 11, 10, 12, 59))
+    assert reserva.estado == EstadoReserva.ACEPTADA
+    assert reserva.devuelta_en is None
+
+
+def test_se_puede_finalizar_apenas_empieza():
+    reserva = reserva_en(EstadoReserva.ACEPTADA, paseador_id=7)
+    reserva.finalizar(datetime(2026, 11, 10, 13, 0))
+    assert reserva.estado == EstadoReserva.FINALIZADA
+
+
 def test_finalizar_tarde_marca_devolucion_tardia():
     reserva = reserva_en(EstadoReserva.ACEPTADA, paseador_id=7)
     reserva.finalizar(datetime(2026, 11, 10, 14, 30))

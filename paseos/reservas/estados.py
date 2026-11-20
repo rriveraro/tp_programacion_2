@@ -64,6 +64,11 @@ class AceptadaState(ReservaState):
         reserva.estado = EstadoReserva.PENDIENTE
 
     def finalizar(self, reserva, ahora):
+        # No se puede terminar un paseo que todavía no empezó.
+        if ahora < reserva.turno.inicio:
+            raise TransicionInvalidaError(
+                'No se puede finalizar un paseo antes de su horario de inicio'
+            )
         reserva.devuelta_en = ahora
         reserva.devolucion_tardia = ahora > reserva.turno.fin
         reserva.estado = EstadoReserva.FINALIZADA

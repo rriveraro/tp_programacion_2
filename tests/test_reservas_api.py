@@ -292,6 +292,36 @@ def test_flujo_finalizacion_y_devolucion_tardia(
     assert body['devolucion_tardia'] is True
 
 
+def test_no_se_puede_finalizar_antes_del_horario(
+    client: TestClient, escenario, fijar_ahora
+):
+    fijar_ahora(datetime(2026, 5, 10, 10, 0))
+    res = client.post(
+        '/reservas',
+        headers=escenario['dueno'],
+        json={
+            'mascota_id': escenario['mascota_id'],
+            'fecha': '2026-05-10',
+            'hora_inicio': '14:00:00',
+            'hora_fin': '15:00:00',
+        },
+    )
+    reserva_id = res.json()['id']
+    client.post(
+        f'/reservas/{reserva_id}/aceptar', headers=escenario['paseador']
+    )
+
+    # A las 11:00 el paseo (14 a 15) todavía no empezó
+    fijar_ahora(datetime(2026, 5, 10, 11, 0))
+    res_fin = client.post(
+        f'/reservas/{reserva_id}/finalizar', headers=escenario['paseador']
+    )
+    assert res_fin.status_code == status.HTTP_409_CONFLICT
+
+    res_mias = client.get('/reservas/mias', headers=escenario['paseador'])
+    assert res_mias.json()[0]['estado'] == 'ACEPTADA'
+
+
 def test_aceptar_hasta_maximo_perros_simultaneos_no_falla(
     client: TestClient, escenario, fijar_ahora
 ):
