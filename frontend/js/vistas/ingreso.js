@@ -7,7 +7,7 @@ export function vistaIngreso(raiz, { alIngresar }) {
   raiz.innerHTML = `
     <div class="ingreso">
       <section class="cartel">
-        <div class="marca"><span class="punto" aria-hidden="true"></span>Yendog</div>
+        <div class="marca"><img src="img/logo.png" alt="Yendog" class="logo"></div>
         <div>
           <h1>Tu perro sale a pasear.</h1>
           <p>Reservá un paseo y lo acepta un paseador de tu barrio.

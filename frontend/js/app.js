@@ -60,7 +60,7 @@ function mostrarApp() {
   const rutas = RUTAS[usuario.rol];
   raiz.innerHTML = `
     <header class="barra">
-      <a class="marca" href="#/"><span class="punto" aria-hidden="true"></span>Yendog</a>
+      <a class="marca" href="#/"><img src="img/logo.png" alt="Yendog" class="logo"></a>
       <div class="usuario">
         <span class="nombre">${esc(usuario.nombre)}</span>
         <span class="rol">${usuario.rol === 'DUENO' ? 'Dueño' : 'Paseador'}</span>
