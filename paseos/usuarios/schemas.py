@@ -5,9 +5,11 @@ cliente. Por eso `password_hash` nunca aparece en un schema de salida.
 """
 
 from datetime import date
+from typing_extensions import Annotated
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
+from paseos.core.validaciones import Nombre
 from paseos.usuarios.enums import Barrio, Rol
 
 
@@ -16,9 +18,10 @@ class UsuarioCrear(BaseModel):
 
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
-    nombre: str = Field(min_length=2, max_length=100)
+    nombre: Annotated[Nombre, Field(min_length=2, max_length=100)]
     dni: str = Field(
-        pattern=r'^\d{7,8}$', description='Solo números, 7 u 8 dígitos'
+        pattern=r'^[1-9]\d{6,7}$',
+        description='Solo números, 7 u 8 dígitos sin empezar con 0',
     )
     fecha_nacimiento: date
     calle: str = Field(min_length=2, max_length=100)
@@ -42,7 +45,8 @@ class UsuarioActualizar(BaseModel):
 
     model_config = ConfigDict(extra='forbid')
 
-    nombre: str | None = Field(default=None, min_length=2, max_length=100)
+    nombre: Annotated[Nombre, Field(default=None, 
+                        min_length=2, max_length=100)] | None = None
     calle: str | None = Field(default=None, min_length=2, max_length=100)
     numero: str | None = Field(default=None, min_length=1, max_length=10)
     barrio: Barrio | None = None

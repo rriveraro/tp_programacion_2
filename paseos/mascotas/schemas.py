@@ -1,7 +1,9 @@
 from datetime import date
+from typing_extensions import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from paseos.core.validaciones import Nombre
 from paseos.mascotas.enums import Tamaño
 
 
@@ -31,7 +33,7 @@ class MascotaCrear(_MascotaValidaciones):
     nombre: str = Field(min_length=1, max_length=100)
     fecha_nacimiento: date
     tamaño: Tamaño
-    raza: str = Field(min_length=1, max_length=100)
+    raza: Annotated[Nombre, Field(min_length=2, max_length=100)]
     fecha_antirrabica: date | None = None
 
 
@@ -43,7 +45,7 @@ class MascotaActualizar(_MascotaValidaciones):
     nombre: str | None = Field(default=None, min_length=1, max_length=100)
     fecha_nacimiento: date | None = None
     tamaño: Tamaño | None = None
-    raza: str | None = Field(default=None, min_length=1, max_length=100)
+    raza: Annotated[Nombre, Field(default=None, min_length=2, max_length=100)]
     fecha_antirrabica: date | None = None
 
 
